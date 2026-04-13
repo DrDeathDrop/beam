@@ -14,6 +14,7 @@ public class User {
     private Long id;
 
     private String name;
+    @Column(length = 191, unique = true)
 
     private String email;
 

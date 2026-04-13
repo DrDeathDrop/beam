@@ -4,8 +4,9 @@ import org.example.beam.dto.CreateUserDto;
 import org.example.beam.dto.UpdateUserDto;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
