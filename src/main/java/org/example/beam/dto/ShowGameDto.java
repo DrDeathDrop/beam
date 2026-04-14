@@ -1,33 +1,14 @@
 package org.example.beam.dto;
 
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 
-@Service
-public class CreateGameDto {
+public class ShowGameDto {
     private String title;
     private String genre;
     private BigDecimal price;
-    private Long publisherId;
+    private String publisherName;
     private String description;
     private String releaseDate;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
 
     public String getTitle() {
         return title;
@@ -53,11 +34,28 @@ public class CreateGameDto {
         this.price = price;
     }
 
-    public Long getPublisherId() {
-        return publisherId;
+    public String getPublisherName() {
+        return publisherName;
     }
 
-    public void setPublisherId(Long publisherId) {
-        this.publisherId = publisherId;
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
 }

@@ -14,13 +14,13 @@ public class PublisherService {
         this.publisherRepository = publisherRepository;
     }
 
-    public Publisher createPublisher(CreatePublisherDto dto) {
+    public Publisher createPublisher(CreatePublisherDto createPublisherDto) {
         Publisher publisher = new Publisher();
-        publisher.setName(dto.getName());
-        publisher.setCountry(dto.getCountry());
-        publisher.setYearsOfEstablishment(dto.getYearsOfEstablishment());
-        publisher.setWebsite(dto.getWebsite());
-        publisher.setFounded(dto.getFounded());
+        publisher.setName(createPublisherDto.getName());
+        publisher.setCountry(createPublisherDto.getCountry());
+        publisher.setYearsOfEstablishment(createPublisherDto.getYearsOfEstablishment());
+        publisher.setWebsite(createPublisherDto.getWebsite());
+        publisher.setFounded(createPublisherDto.getFounded());
         return publisherRepository.save(publisher);
     }
 
@@ -30,24 +30,24 @@ public class PublisherService {
         publisherRepository.delete(publisher);
     }
 
-    public Publisher updatePublisher(UpdatePublisherDto dto) {
-        Publisher publisher = publisherRepository.findById(dto.getId())
+    public Publisher updatePublisher(Long id, UpdatePublisherDto updatePublisherDto) {
+        Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
 
-        if (dto.getName() != null) {
-            publisher.setName(dto.getName());
+        if (updatePublisherDto.getName() != null) {
+            publisher.setName(updatePublisherDto.getName());
         }
-        if (dto.getCountry() != null) {
-            publisher.setCountry(dto.getCountry());
+        if (updatePublisherDto.getCountry() != null) {
+            publisher.setCountry(updatePublisherDto.getCountry());
         }
-        if (dto.getYearsOfEstablishment() != null) {
-            publisher.setYearsOfEstablishment(dto.getYearsOfEstablishment());
+        if (updatePublisherDto.getYearsOfEstablishment() != null) {
+            publisher.setYearsOfEstablishment(updatePublisherDto.getYearsOfEstablishment());
         }
-        if (dto.getWebsite() != null) {
-            publisher.setWebsite(dto.getWebsite());
+        if (updatePublisherDto.getWebsite() != null) {
+            publisher.setWebsite(updatePublisherDto.getWebsite());
         }
-        if (dto.getFounded() != null) {
-            publisher.setFounded(dto.getFounded());
+        if (updatePublisherDto.getFounded() != null) {
+            publisher.setFounded(updatePublisherDto.getFounded());
         }
 
         return publisherRepository.save(publisher);

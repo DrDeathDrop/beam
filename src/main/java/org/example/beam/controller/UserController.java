@@ -1,7 +1,7 @@
 package org.example.beam.controller;
 
-import org.example.beam.dto.CreateUserDto;
-import org.example.beam.dto.UpdateUserDto;
+import org.example.beam.dto.*;
+import org.example.beam.model.Game;
 import org.example.beam.model.User;
 import org.example.beam.repository.UserRepository;
 import org.example.beam.service.UserService;
@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-//TODO: Implement read operation, and add controllers for the other  classes
+//TODO: purchase ?
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
 
     @Autowired
     private UserRepository userRepository;
@@ -67,6 +66,17 @@ public class UserController {
         updateUserDto.setPassword(encoder.encode(updateUserDto.getPassword()));
         userService.updateUser(id, updateUserDto);
         return "User updated successfully";
+    }
+    @GetMapping("/profile/{id}")
+    public ShowUserDto getMyProfile(@PathVariable Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ShowUserDto showUserDto = new ShowUserDto();
+        showUserDto.setName(user.getName());
+        showUserDto.setEmail(user.getEmail());
+
+        return showUserDto;
     }
 
 }

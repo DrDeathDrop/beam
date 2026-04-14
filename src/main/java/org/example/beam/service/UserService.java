@@ -1,7 +1,6 @@
 package org.example.beam.service;
 
-import org.example.beam.dto.CreateUserDto;
-import org.example.beam.dto.UpdateUserDto;
+import org.example.beam.dto.*;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -24,21 +23,21 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void createUser(CreateUserDto dto) {
+    public void createUser(CreateUserDto createUserDto) {
         User user = new User();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        user.setName(createUserDto.getName());
+        user.setEmail(createUserDto.getEmail());
+        user.setPassword(createUserDto.getPassword());
 
         userRepository.save(user);
     }
 
-    public void updateUser(Long id, UpdateUserDto update) {
+    public void updateUser(Long id, UpdateUserDto updateUserDto) {
         User user = userRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setName(update.getName());
-        user.setEmail(update.getEmail());
-        user.setPassword(update.getPassword());
+        user.setName(updateUserDto.getName());
+        user.setEmail(updateUserDto.getEmail());
+        user.setPassword(updateUserDto.getPassword());
 
         userRepository.save(user);
     }
