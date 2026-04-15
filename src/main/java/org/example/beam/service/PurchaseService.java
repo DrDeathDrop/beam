@@ -20,7 +20,7 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public Purchase buyGame(Long userId, Long gameId) {
+    public Purchase buyGame(Long userId, Long gameId, PaymentMethod paymentMethod) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -32,6 +32,7 @@ public class PurchaseService {
         purchase.setUser(user);
         purchase.setGame(game);
         purchase.setPricePaid(game.getPrice());
+        purchase.setPaymentMethod(paymentMethod);
         purchase.setStatus(PurchaseStatus.COMPLETED);
 
         return purchaseRepository.save(purchase);

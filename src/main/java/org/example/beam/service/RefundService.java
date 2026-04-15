@@ -19,12 +19,13 @@ public class RefundService {
     }
 
     public Purchase refundPurchase(Long userId, Long purchaseId) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Purchase purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new RuntimeException("Couldn't find the specified purchase"));
 
-        if (!purchase.getUser().equals(user)) {
+        if (!purchase.getUser().getId().equals(userId)) {
             throw new RuntimeException("You do not have this product, so no refunds :)");
         }
 

@@ -5,6 +5,8 @@ import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -41,6 +43,17 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public List<ShowUserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(user -> {
+            ShowUserDto dto = new ShowUserDto();
+            dto.setName(user.getName());
+            dto.setEmail(user.getEmail());
+            return dto;
+        }).toList();
+    }
+
 
 
 

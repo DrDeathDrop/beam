@@ -11,7 +11,11 @@ public class Purchase {
     private Long id;
 
     private BigDecimal pricePaid;
-    private String paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
     private PurchaseStatus status;
 
     @ManyToOne
@@ -30,11 +34,11 @@ public class Purchase {
         this.pricePaid = pricePaid;
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
