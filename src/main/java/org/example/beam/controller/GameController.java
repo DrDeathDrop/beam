@@ -38,14 +38,6 @@ public class GameController {
 
     @PostMapping("/update/{id}")
     public String updateGame(@PathVariable Long id, @RequestBody UpdateGameDto updateGameDto){
-        if (updateGameDto.getTitle() == null
-                || updateGameDto.getPrice() == null
-                || updateGameDto.getGenre() == null
-                || updateGameDto.getDescription() == null
-                || updateGameDto.getReleaseDate() == null
-                || updateGameDto.getPublisherId() == null) {
-            return "Please provide all the required fields";
-        }
 
         gameService.updateGame(id, updateGameDto);
         return "Game updated successfully";

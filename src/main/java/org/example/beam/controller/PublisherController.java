@@ -37,13 +37,6 @@ public class PublisherController {
 
     @PostMapping("/update/{id}")
     public String updatePublisher(@PathVariable Long id, @RequestBody UpdatePublisherDto updatePublisherDto){
-        if (updatePublisherDto.getName() == null
-                || updatePublisherDto.getCountry() == null
-                || updatePublisherDto.getFounded() == null
-                || updatePublisherDto.getWebsite() == null
-                || updatePublisherDto.getYearsOfEstablishment() == null) {
-            return "Please provide all the required fields";
-        }
 
         publisherService.updatePublisher(id, updatePublisherDto);
         return "Publisher updated successfully";

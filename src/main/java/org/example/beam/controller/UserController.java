@@ -54,11 +54,7 @@ public class UserController {
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto){
-        if (updateUserDto.getEmail() == null
-                || updateUserDto.getPassword() == null
-                || updateUserDto.getName() == null) {
-            return "Please provide all the required fields";
-        }
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         updateUserDto.setPassword(encoder.encode(updateUserDto.getPassword()));
         userService.updateUser(id, updateUserDto);
