@@ -1,5 +1,8 @@
 package org.example.beam.model;
 import jakarta.persistence.*;
+import org.example.beam.enumeration.PaymentMethod;
+import org.example.beam.enumeration.PurchaseStatus;
+
 import java.math.BigDecimal;
 
 
@@ -25,6 +28,14 @@ public class Purchase {
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public BigDecimal getPricePaid() {
         return pricePaid;

@@ -1,4 +1,4 @@
-package org.example.beam.exceptions;
+package org.example.beam.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

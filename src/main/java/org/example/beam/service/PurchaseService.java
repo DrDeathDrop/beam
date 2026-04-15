@@ -1,9 +1,10 @@
 package org.example.beam.service;
 
+import org.example.beam.enumeration.PaymentMethod;
 import org.example.beam.repository.*;
 import org.example.beam.model.*;
 import org.springframework.stereotype.Service;
-import org.example.beam.model.PurchaseStatus;
+import org.example.beam.enumeration.PurchaseStatus;
 
 @Service
 public class PurchaseService {

@@ -3,18 +3,16 @@ package org.example.beam.service;
 import org.example.beam.repository.*;
 import org.example.beam.model.*;
 import org.springframework.stereotype.Service;
-import org.example.beam.model.PurchaseStatus;
+import org.example.beam.enumeration.PurchaseStatus;
 
 @Service
 public class RefundService {
 
     private final UserRepository userRepository;
-    private final GameRepository gameRepository;
     private final PurchaseRepository purchaseRepository;
 
-    public RefundService(UserRepository userRepository, GameRepository gameRepository, PurchaseRepository purchaseRepository) {
+    public RefundService(UserRepository userRepository, PurchaseRepository purchaseRepository) {
         this.userRepository = userRepository;
-        this.gameRepository = gameRepository;
         this.purchaseRepository = purchaseRepository;
     }
 

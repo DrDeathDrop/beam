@@ -1,7 +1,7 @@
 package org.example.beam.dto;
 
-import org.example.beam.model.PaymentMethod;
-import org.example.beam.model.PurchaseStatus;
+import org.example.beam.enumeration.PaymentMethod;
+import org.example.beam.enumeration.PurchaseStatus;
 
 import java.math.BigDecimal;
 

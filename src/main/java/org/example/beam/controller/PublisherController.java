@@ -1,7 +1,6 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.*;
-import org.example.beam.model.Game;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.PublisherRepository;
 import org.example.beam.service.PublisherService;

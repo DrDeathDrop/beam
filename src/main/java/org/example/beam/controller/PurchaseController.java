@@ -1,14 +1,9 @@
 package org.example.beam.controller;
 
-import org.example.beam.dto.CreatePurchaseDto;
-import org.example.beam.dto.PurchaseListDto;
-import org.example.beam.dto.ShowPurchaseDto;
-import org.example.beam.model.Game;
-import org.example.beam.model.Purchase;
-import org.example.beam.model.User;
-import org.example.beam.repository.GameRepository;
-import org.example.beam.repository.PurchaseRepository;
-import org.example.beam.repository.UserRepository;
+
+import org.example.beam.dto.*;
+import org.example.beam.model.*;
+import org.example.beam.repository.*;
 import org.example.beam.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,18 +1,14 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.*;
-import org.example.beam.model.Game;
-import org.example.beam.model.User;
+import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
 import org.example.beam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
-
-//TODO: purchase ?
 
 @RestController
 @RequestMapping("/users")
