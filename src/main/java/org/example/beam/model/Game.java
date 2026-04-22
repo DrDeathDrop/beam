@@ -26,6 +26,19 @@ public class Game {
 
     private String description;
 
+    public Game( String title, Publisher publisher, String releaseDate, String genre, BigDecimal price, String description) {
+        this.title = title;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+        this.price = price;
+        this.description = description;
+    }
+
+    public Game() {
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -38,9 +51,9 @@ public class Game {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+   public void setTitle(String title) {
+       this.title = title;
+   }
 
     public Publisher getPublisher() {
         return publisher;
@@ -54,9 +67,9 @@ public class Game {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
+   public void setReleaseDate(String releaseDate) {
+       this.releaseDate = releaseDate;
+   }
 
     public String getGenre() {
         return genre;

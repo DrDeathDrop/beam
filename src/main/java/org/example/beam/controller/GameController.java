@@ -19,7 +19,8 @@ public class GameController {
 
     @PostMapping("/add")
     public String addGame(@RequestBody CreateGameDto createGameDto){
-        if (createGameDto.getTitle() == null
+        if (createGameDto == null
+                ||createGameDto.getTitle() == null
                 || createGameDto.getPrice() == null
                 || createGameDto.getGenre() == null
                 || createGameDto.getDescription() == null

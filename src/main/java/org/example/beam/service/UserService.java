@@ -1,5 +1,6 @@
 package org.example.beam.service;
 
+import jakarta.transaction.Transactional;
 import org.example.beam.dto.*;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
@@ -18,6 +19,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -25,6 +27,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Transactional
     public void createUser(CreateUserDto createUserDto) {
         User user = new User();
         user.setName(createUserDto.getName());
@@ -34,6 +37,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void updateUser(Long id, UpdateUserDto updateUserDto) {
         User user = userRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("User not found"));
@@ -48,6 +52,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public List<ShowUserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {

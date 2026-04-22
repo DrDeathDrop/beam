@@ -1,5 +1,6 @@
 package org.example.beam.service;
 
+import jakarta.transaction.Transactional;
 import org.example.beam.repository.*;
 import org.example.beam.model.*;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class RefundService {
         this.purchaseRepository = purchaseRepository;
     }
 
+    @Transactional
     public Purchase refundPurchase(Long userId, Long purchaseId) {
 
         User user = userRepository.findById(userId)

@@ -1,5 +1,6 @@
 package org.example.beam.service;
 
+import jakarta.transaction.Transactional;
 import org.example.beam.enumeration.PaymentMethod;
 import org.example.beam.repository.*;
 import org.example.beam.model.*;
@@ -21,6 +22,7 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
+    @Transactional
     public Purchase buyGame(Long userId, Long gameId, PaymentMethod paymentMethod) {
 
         User user = userRepository.findById(userId)
