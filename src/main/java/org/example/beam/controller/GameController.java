@@ -47,12 +47,9 @@ public class GameController {
         gameService.updateGame(id, updateGameDto);
         return "Game updated successfully";
     }
-    
+
     @GetMapping("/view/{id}")
     public ShowGameDto getGame(@PathVariable Long id) {
-        Game game = gameRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
-
-        return gameMapper.toDto(game);
+        return gameService.getGame(id);
     }
 }

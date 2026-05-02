@@ -134,4 +134,40 @@ class PublisherServiceTests {
         assertEquals("Publisher not found", exception.getMessage());
         verify(publisherRepository, never()).save(any());
     }
+
+    @Test
+    void getPublisher_success() {
+        Long id = 1L;
+
+        Publisher publisher = new Publisher();
+        publisher.setId(id);
+        publisher.setName("Ubisoft");
+        publisher.setCountry("France");
+        publisher.setFounded("1986");
+        publisher.setWebsite("ubisoft.com");
+        publisher.setYearsOfEstablishment("38");
+
+        when(publisherRepository.findById(id)).thenReturn(Optional.of(publisher));
+
+        ShowPublisherDto result = publisherService.getPublisher(id);
+
+        assertNotNull(result);
+        assertEquals("Ubisoft", result.getName());
+        assertEquals("France", result.getCountry());
+        assertEquals("1986", result.getFounded());
+        assertEquals("ubisoft.com", result.getWebsite());
+        assertEquals("38", result.getYearsOfEstablishment());
+    }
+
+    @Test
+    void getPublisher_notFound_throwsException() {
+        when(publisherRepository.findById(99L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> publisherService.getPublisher(99L));
+
+        assertEquals("Publisher not found", exception.getMessage());
+        verify(publisherRepository).findById(99L);
+    }
+
 }

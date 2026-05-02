@@ -84,34 +84,25 @@ class GameControllerTests {
 
     @Test
     void getGame_success() {
-        Publisher publisher = new Publisher();
-        publisher.setName("Indie Studio");
+        ShowGameDto dto = new ShowGameDto();
+        dto.setTitle("TGame");
+        dto.setPublisherName("Indie Studio");
 
-        Game game = new Game();
-        game.setTitle("TGame");
-        game.setGenre("Adventure");
-        game.setPrice(BigDecimal.valueOf(19.99));
-        game.setDescription("Nice adventure");
-        game.setReleaseDate("2019");
-        game.setPublisher(publisher);
+        when(gameService.getGame(11L)).thenReturn(dto);
 
-        when(gameRepository.findById(11L)).thenReturn(Optional.of(game));
+        ShowGameDto result = gameController.getGame(11L);
 
-        ShowGameDto resultDto = gameController.getGame(11L);
-
-        assertNotNull(resultDto);
-        assertEquals("TGame", resultDto.getTitle());
-        assertEquals("Indie Studio", resultDto.getPublisherName());
+        assertNotNull(result);
+        assertEquals("TGame", result.getTitle());
+        assertEquals("Indie Studio", result.getPublisherName());
     }
 
     @Test
     void getGame_notFound_throwsException() {
-        Long id = 88L;
-        when(gameRepository.findById(id)).thenReturn(Optional.empty());
+        when(gameService.getGame(88L)).thenThrow(new RuntimeException("Game not found"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            gameController.getGame(id);
-        });
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> gameController.getGame(88L));
 
         assertEquals("Game not found", exception.getMessage());
     }

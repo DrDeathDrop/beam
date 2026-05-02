@@ -6,6 +6,7 @@ import org.example.beam.repository.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -123,4 +124,45 @@ class GameServiceTests {
         assertEquals("Action", result.getGenre());
         verify(publisherRepository, never()).findById(anyLong());
     }
+
+    @Test
+    void getGame_success() {
+        Long gameId = 1L;
+
+        Publisher publisher = new Publisher();
+        publisher.setName("Test Publisher");
+
+        Game game = new Game();
+        game.setId(gameId);
+        game.setTitle("Test Game");
+        game.setGenre("Action");
+        game.setPrice(BigDecimal.valueOf(49.99));
+        game.setDescription("A test game");
+        game.setReleaseDate("2024");
+        game.setPublisher(publisher);
+
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
+
+        ShowGameDto result = gameService.getGame(gameId);
+
+        assertNotNull(result);
+        assertEquals("Test Game", result.getTitle());
+        assertEquals("Action", result.getGenre());
+        assertEquals(BigDecimal.valueOf(49.99), result.getPrice());
+        assertEquals("A test game", result.getDescription());
+        assertEquals("2024", result.getReleaseDate());
+        assertEquals("Test Publisher", result.getPublisherName());
+    }
+
+    @Test
+    void getGame_notFound_throwsException() {
+        when(gameRepository.findById(99L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> gameService.getGame(99L));
+
+        assertEquals("Game not found", exception.getMessage());
+        verify(gameRepository).findById(99L);
+    }
+
 }

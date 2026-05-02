@@ -1,29 +1,37 @@
 package org.example.beam.service;
 
+
 import org.example.beam.dto.*;
+import org.example.beam.mapper.UserMapper;
 import org.example.beam.model.User;
 import org.example.beam.repository.UserRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UserServiceTests {
 
-    @InjectMocks
-    private UserService userService;
+    private UserService userService; // class field, not local variable
 
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Mock
+    private UserMapper userMapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        userService = new UserService(userRepository, passwordEncoder, userMapper);
     }
 
     @Test
@@ -33,8 +41,11 @@ class UserServiceTests {
         dto.setEmail("john@example.com");
         dto.setPassword("password123");
 
+        when(passwordEncoder.encode("password123")).thenReturn("hashed_password");
+
         userService.createUser(dto);
 
+        verify(passwordEncoder).encode("password123");
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -57,7 +68,8 @@ class UserServiceTests {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.deleteUser(id));
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> userService.deleteUser(id));
 
         assertEquals("User not found", exception.getMessage());
         verify(userRepository, never()).delete(any());
@@ -77,13 +89,15 @@ class UserServiceTests {
         dto.setPassword("newpass");
 
         when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
+        when(passwordEncoder.encode("newpass")).thenReturn("hashed_newpass");
 
         userService.updateUser(id, dto);
 
         assertEquals("New Name", existingUser.getName());
         assertEquals("new@example.com", existingUser.getEmail());
-        assertEquals("newpass", existingUser.getPassword());
+        assertEquals("hashed_newpass", existingUser.getPassword());
         verify(userRepository, times(1)).save(existingUser);
+        verify(passwordEncoder).encode("newpass");
     }
 
     @Test
@@ -93,7 +107,8 @@ class UserServiceTests {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.updateUser(id, dto));
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> userService.updateUser(id, dto));
 
         assertEquals("User not found", exception.getMessage());
         verify(userRepository, never()).save(any());
@@ -109,7 +124,17 @@ class UserServiceTests {
         user2.setName("Bob");
         user2.setEmail("bob@example.com");
 
+        ShowUserDto dto1 = new ShowUserDto();
+        dto1.setName("Alice");
+        dto1.setEmail("alice@example.com");
+
+        ShowUserDto dto2 = new ShowUserDto();
+        dto2.setName("Bob");
+        dto2.setEmail("bob@example.com");
+
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+        when(userMapper.toDto(user1)).thenReturn(dto1); // mock the mapper
+        when(userMapper.toDto(user2)).thenReturn(dto2);
 
         List<ShowUserDto> result = userService.getAllUsers();
 

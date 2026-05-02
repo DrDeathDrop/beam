@@ -42,18 +42,7 @@ public class PublisherController {
         return "Publisher updated successfully";
     }
     @GetMapping("/view/{id}")
-    public ShowPublisherDto getPublisher(@PathVariable Long id){
-        Publisher publisher = publisherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publisher not found"));
-
-        ShowPublisherDto showPublisherDto = new ShowPublisherDto();
-
-        showPublisherDto.setName(publisher.getName());
-        showPublisherDto.setCountry(publisher.getCountry());
-        showPublisherDto.setFounded(publisher.getFounded());
-        showPublisherDto.setWebsite(publisher.getWebsite());
-        showPublisherDto.setYearsOfEstablishment(publisher.getYearsOfEstablishment());
-
-        return showPublisherDto;
+    public ShowPublisherDto getPublisher(@PathVariable Long id) {
+        return publisherService.getPublisher(id);
     }
 }

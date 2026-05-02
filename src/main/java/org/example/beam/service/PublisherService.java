@@ -2,6 +2,7 @@ package org.example.beam.service;
 
 import jakarta.transaction.Transactional;
 import org.example.beam.dto.CreatePublisherDto;
+import org.example.beam.dto.ShowPublisherDto;
 import org.example.beam.dto.UpdatePublisherDto;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.PublisherRepository;
@@ -30,6 +31,21 @@ public class PublisherService {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
         publisherRepository.delete(publisher);
+    }
+
+    @Transactional
+    public ShowPublisherDto getPublisher(Long id) {
+        Publisher publisher = publisherRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Publisher not found"));
+
+        ShowPublisherDto dto = new ShowPublisherDto();
+        dto.setName(publisher.getName());
+        dto.setCountry(publisher.getCountry());
+        dto.setFounded(publisher.getFounded());
+        dto.setWebsite(publisher.getWebsite());
+        dto.setYearsOfEstablishment(publisher.getYearsOfEstablishment());
+
+        return dto;
     }
 
     @Transactional

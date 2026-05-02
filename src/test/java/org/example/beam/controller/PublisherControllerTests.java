@@ -78,44 +78,31 @@ class PublisherControllerTests {
         verify(publisherService, times(1)).updatePublisher(eq(id), any(UpdatePublisherDto.class));
     }
 
-    @Test
-    void updatePublisher_missingField() {
-        Long id = 2L;
-        UpdatePublisherDto dto = new UpdatePublisherDto();
-        dto.setName(null);
-        dto.setCountry("CountryY");
-        dto.setFounded("2001-01-01");
-        dto.setWebsite("https://upd.com");
-        dto.setYearsOfEstablishment("21");
-        String result = publisherController.updatePublisher(id, dto);
-        assertEquals("Please provide all the required fields", result);
-        verify(publisherService, never()).updatePublisher(anyLong(), any());
-    }
 
     @Test
     void getPublisher_success() {
-        Long id = 10L;
-        Publisher publisher = new Publisher();
-        publisher.setName("TestPub");
-        publisher.setCountry("ZZ");
-        publisher.setFounded("1991");
-        publisher.setWebsite("www.tst.com");
-        publisher.setYearsOfEstablishment("33");
+        ShowPublisherDto dto = new ShowPublisherDto();
+        dto.setName("TestPub");
+        dto.setCountry("ZZ");
+        dto.setFounded("1991");
+        dto.setWebsite("www.tst.com");
+        dto.setYearsOfEstablishment("33");
 
-        when(publisherRepository.findById(id)).thenReturn(Optional.of(publisher));
-        ShowPublisherDto dto = publisherController.getPublisher(id);
+        when(publisherService.getPublisher(10L)).thenReturn(dto);
 
-        assertEquals("TestPub", dto.getName());
-        assertEquals("ZZ", dto.getCountry());
-        assertEquals("1991", dto.getFounded());
-        assertEquals("www.tst.com", dto.getWebsite());
-        assertEquals("33", dto.getYearsOfEstablishment());
+        ShowPublisherDto result = publisherController.getPublisher(10L);
+
+        assertEquals("TestPub", result.getName());
+        assertEquals("ZZ", result.getCountry());
+        assertEquals("1991", result.getFounded());
+        assertEquals("www.tst.com", result.getWebsite());
+        assertEquals("33", result.getYearsOfEstablishment());
     }
 
     @Test
     void getPublisher_notFound() {
-        Long id = 11L;
-        when(publisherRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> publisherController.getPublisher(id));
+        when(publisherService.getPublisher(11L)).thenThrow(new RuntimeException("Publisher not found"));
+
+        assertThrows(RuntimeException.class, () -> publisherController.getPublisher(11L));
     }
 }

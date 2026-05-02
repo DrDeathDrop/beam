@@ -51,12 +51,6 @@ class PurchaseControllerTests {
         CreatePurchaseDto dto = new CreatePurchaseDto();
         dto.setPaymentMethod(PaymentMethod.CREDIT_CARD);
 
-        Game game = new Game();
-        User user = new User();
-
-        when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
         String result = purchaseController.buyGame(userId, gameId, dto);
 
         assertEquals("Game purchased successfully", result);
@@ -69,12 +63,6 @@ class PurchaseControllerTests {
         CreatePurchaseDto dto = new CreatePurchaseDto();
         dto.setPaymentMethod(null);
 
-        Game game = new Game();
-        User user = new User();
-
-        when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
         String result = purchaseController.buyGame(userId, gameId, dto);
 
         assertEquals("Please provide a valid payment method", result);
@@ -82,76 +70,45 @@ class PurchaseControllerTests {
     }
 
     @Test
-    void buyGame_userNotFound() {
-        Long userId = 1L, gameId = 2L;
-        CreatePurchaseDto dto = new CreatePurchaseDto();
-        dto.setPaymentMethod(PaymentMethod.G_PAY);
-        Game game = new Game();
-
-        when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        Exception ex = assertThrows(RuntimeException.class, () -> purchaseController.buyGame(userId, gameId, dto));
-        assertEquals("User not found", ex.getMessage());
-    }
-
-    @Test
-    void buyGame_gameNotFound() {
-        Long userId = 1L, gameId = 2L;
-        CreatePurchaseDto dto = new CreatePurchaseDto();
-        dto.setPaymentMethod(PaymentMethod.DEBIT_CARD);
-
-        when(gameRepository.findById(gameId)).thenReturn(Optional.empty());
-
-        Exception ex = assertThrows(RuntimeException.class, () -> purchaseController.buyGame(userId, gameId, dto));
-        assertEquals("Game not found", ex.getMessage());
-    }
-
-    @Test
     void showPurchase_success() {
         Long userId = 5L;
-        User user = new User();
-        Purchase purchase = new Purchase();
-        Game game = new Game();
-        game.setTitle("MyGame");
-        purchase.setGame(game);
-        purchase.setPricePaid(new BigDecimal("29.99"));
-        purchase.setPaymentMethod(PaymentMethod.CREDIT_CARD);
-        purchase.setStatus(PurchaseStatus.COMPLETED);
+        PurchaseListDto item = new PurchaseListDto();
+        item.setGameName("MyGame");
+        item.setPricePaid(new BigDecimal("29.99"));
+        item.setPaymentMethod(PaymentMethod.CREDIT_CARD);
+        item.setStatus(PurchaseStatus.COMPLETED);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(purchaseRepository.findAllByUserId(userId)).thenReturn(List.of(purchase));
+        ShowPurchaseDto showDto = new ShowPurchaseDto();
+        showDto.setGameLibrary(List.of(item));
+
+        when(purchaseService.getPurchases(userId)).thenReturn(showDto);
 
         ShowPurchaseDto result = purchaseController.showPurchase(userId);
 
         assertNotNull(result.getGameLibrary());
         assertEquals(1, result.getGameLibrary().size());
-        PurchaseListDto dto = result.getGameLibrary().get(0);
-        assertEquals("MyGame", dto.getGameName());
-        assertEquals(new BigDecimal("29.99"), dto.getPricePaid());
-        assertEquals(PaymentMethod.CREDIT_CARD, dto.getPaymentMethod());
-        assertEquals(PurchaseStatus.COMPLETED, dto.getStatus());
+        assertEquals("MyGame", result.getGameLibrary().get(0).getGameName());
     }
 
     @Test
     void showPurchase_userNotFound() {
-        Long userId = 10L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(purchaseService.getPurchases(10L)).thenThrow(new RuntimeException("User not found"));
 
-        Exception e = assertThrows(RuntimeException.class, () -> purchaseController.showPurchase(userId));
-        assertEquals("User not found", e.getMessage());
+        assertThrows(RuntimeException.class, () -> purchaseController.showPurchase(10L));
     }
 
     @Test
     void showPurchase_noPurchases() {
-        Long userId = 8L;
-        User user = new User();
+        ShowPurchaseDto empty = new ShowPurchaseDto();
+        empty.setGameLibrary(List.of());
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(purchaseRepository.findAllByUserId(userId)).thenReturn(List.of());
+        when(purchaseService.getPurchases(8L)).thenReturn(empty);
 
-        ShowPurchaseDto result = purchaseController.showPurchase(userId);
+        ShowPurchaseDto result = purchaseController.showPurchase(8L);
         assertNotNull(result.getGameLibrary());
         assertTrue(result.getGameLibrary().isEmpty());
     }
+
+
+
 }

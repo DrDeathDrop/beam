@@ -1,11 +1,15 @@
 package org.example.beam.service;
 
 import jakarta.transaction.Transactional;
+import org.example.beam.dto.PurchaseListDto;
+import org.example.beam.dto.ShowPurchaseDto;
 import org.example.beam.enumeration.PaymentMethod;
 import org.example.beam.repository.*;
 import org.example.beam.model.*;
 import org.springframework.stereotype.Service;
 import org.example.beam.enumeration.PurchaseStatus;
+
+import java.util.List;
 
 @Service
 public class PurchaseService {
@@ -20,6 +24,28 @@ public class PurchaseService {
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.purchaseRepository = purchaseRepository;
+    }
+
+    @Transactional
+    public ShowPurchaseDto getPurchases(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<PurchaseListDto> purchaseDto = purchaseRepository.findAllByUserId(userId)
+                .stream()
+                .map(p -> {
+                    PurchaseListDto dto = new PurchaseListDto();
+                    dto.setGameName(p.getGame().getTitle());
+                    dto.setPricePaid(p.getPricePaid());
+                    dto.setPaymentMethod(p.getPaymentMethod());
+                    dto.setStatus(p.getStatus());
+                    return dto;
+                })
+                .toList();
+
+        ShowPurchaseDto dto = new ShowPurchaseDto();
+        dto.setGameLibrary(purchaseDto);
+        return dto;
     }
 
     @Transactional

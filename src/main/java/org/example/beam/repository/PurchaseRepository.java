@@ -10,9 +10,7 @@ import java.util.Optional;
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     Optional<Purchase> findById(Long id);
     List<Purchase> findAllByUserId(Long userId);
-    Optional<Purchase> findByStatus(String status);
-    Optional<Purchase> findByPricePaid(BigDecimal pricePaid);
-    Optional<Purchase> findByPaymentMethod(String paymentMethod);
+
 
 
 }

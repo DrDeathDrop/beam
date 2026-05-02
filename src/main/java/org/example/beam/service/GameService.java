@@ -21,6 +21,22 @@ public class GameService {
     }
 
     @Transactional
+    public ShowGameDto getGame(Long id) {
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        ShowGameDto dto = new ShowGameDto();
+        dto.setTitle(game.getTitle());
+        dto.setGenre(game.getGenre());
+        dto.setPrice(game.getPrice());
+        dto.setDescription(game.getDescription());
+        dto.setReleaseDate(game.getReleaseDate());
+        dto.setPublisherName(game.getPublisher().getName());
+
+        return dto;
+    }
+
+    @Transactional
     public void deleteGame(Long id) { 
         Game game = gameRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Game not found")); 
