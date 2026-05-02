@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/publishers")
 public class PublisherController {
-    @Autowired
-    private PublisherRepository publisherRepository;
 
     @Autowired
     private PublisherService publisherService;

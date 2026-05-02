@@ -67,4 +67,12 @@ public class UserService {
                 .map(userMapper::toDto)
                 .toList();
     }
+
+    public ShowUserDto getUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userMapper.toDto(user);
+    }
+
 }

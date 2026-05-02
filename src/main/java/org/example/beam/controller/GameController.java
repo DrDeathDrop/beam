@@ -12,14 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/games")
 public class GameController {
-    @Autowired
-    private GameRepository gameRepository;
 
     @Autowired
     private GameService gameService;
-
-    @Autowired
-    private GameMapper gameMapper;
 
     @PostMapping("/add")
     public String addGame(@RequestBody CreateGameDto createGameDto){
