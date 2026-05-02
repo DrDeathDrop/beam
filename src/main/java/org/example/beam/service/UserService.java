@@ -2,8 +2,10 @@ package org.example.beam.service;
 
 import jakarta.transaction.Transactional;
 import org.example.beam.dto.*;
+import org.example.beam.mapper.UserMapper;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private UserMapper userMapper;
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -59,11 +64,8 @@ public class UserService {
     @Transactional
     public List<ShowUserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(user -> {
-            ShowUserDto dto = new ShowUserDto();
-            dto.setName(user.getName());
-            dto.setEmail(user.getEmail());
-            return dto;
-        }).toList();
+        return users.stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 }

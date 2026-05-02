@@ -2,6 +2,7 @@ package org.example.beam.controller;
 
 import org.example.beam.dto.*;
 
+import org.example.beam.mapper.GameMapper;
 import org.example.beam.model.Game;
 import org.example.beam.repository.GameRepository;
 import org.example.beam.service.GameService;
@@ -16,6 +17,9 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private GameMapper gameMapper;
 
     @PostMapping("/add")
     public String addGame(@RequestBody CreateGameDto createGameDto){
@@ -43,20 +47,12 @@ public class GameController {
         gameService.updateGame(id, updateGameDto);
         return "Game updated successfully";
     }
+    
     @GetMapping("/view/{id}")
     public ShowGameDto getGame(@PathVariable Long id) {
         Game game = gameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Game not found"));
 
-        ShowGameDto showGameDto = new ShowGameDto();
-
-        showGameDto.setTitle(game.getTitle());
-        showGameDto.setGenre(game.getGenre());
-        showGameDto.setPrice(game.getPrice());
-        showGameDto.setDescription(game.getDescription());
-        showGameDto.setReleaseDate(game.getReleaseDate());
-        showGameDto.setPublisherName(game.getPublisher().getName());
-
-        return showGameDto;
+        return gameMapper.toDto(game);
     }
 }
