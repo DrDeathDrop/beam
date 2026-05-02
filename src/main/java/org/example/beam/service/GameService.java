@@ -33,13 +33,6 @@ public class GameService {
             .orElseThrow(() -> new RuntimeException("Publisher not found"));
         Game game = new Game(createGameDto.getTitle(), publisher, createGameDto.getReleaseDate(), createGameDto.getGenre(),  createGameDto.getPrice(),  createGameDto.getDescription());
 
-        game.setTitle(createGameDto.getTitle());
-       game.setGenre(createGameDto.getGenre());
-       game.setPrice(createGameDto.getPrice());
-       game.setPublisher(publisher);
-       game.setReleaseDate(createGameDto.getReleaseDate());
-       game.setDescription(createGameDto.getDescription());
-
         return gameRepository.save(game);
     }
     @Transactional

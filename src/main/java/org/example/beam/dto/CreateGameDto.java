@@ -1,7 +1,5 @@
 package org.example.beam.dto;
 
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 
 
