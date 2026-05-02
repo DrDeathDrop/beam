@@ -20,25 +20,24 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // inject the bean
+
     @PostMapping("/register")
-    public String registerUser(@RequestBody CreateUserDto createUserDto){
+    public String registerUser(@RequestBody CreateUserDto createUserDto) {
         if (createUserDto.getEmail() == null
                 || createUserDto.getPassword() == null
                 || createUserDto.getName() == null) {
             return "Please provide all the required fields";
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        createUserDto.setPassword(encoder.encode(createUserDto.getPassword()));
-        userService.createUser(createUserDto);
+        userService.createUser(createUserDto); // no encoding here anymore
         return "User registered successfully";
     }
 
     @PostMapping("/login")
     public String login(@RequestBody CreateUserDto createUserDto) {
         Optional<User> userOpt = userRepository.findByName(createUserDto.getName());
-
         if (userOpt.isPresent()) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User user = userOpt.get();
             if (passwordEncoder.matches(createUserDto.getPassword(), user.getPassword())) {
                 return "Login successful";
@@ -47,19 +46,17 @@ public class UserController {
         return "Login failed";
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
-    @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto){
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        updateUserDto.setPassword(encoder.encode(updateUserDto.getPassword()));
-        userService.updateUser(id, updateUserDto);
+    @PutMapping("/update/{id}")
+    public String updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto) {
+        userService.updateUser(id, updateUserDto); // no encoding here anymore
         return "User updated successfully";
     }
+
     @GetMapping("/profile/{id}")
     public ShowUserDto getMyProfile(@PathVariable Long id){
         User user = userRepository.findById(id)

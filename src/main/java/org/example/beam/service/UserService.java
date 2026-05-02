@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.beam.dto.*;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +13,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,BCryptPasswordEncoder passwordEncoder ) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -32,21 +34,22 @@ public class UserService {
         User user = new User();
         user.setName(createUserDto.getName());
         user.setEmail(createUserDto.getEmail());
-        user.setPassword(createUserDto.getPassword());
-
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         userRepository.save(user);
     }
 
-    @Transactional
     public void updateUser(Long id, UpdateUserDto updateUserDto) {
         User user = userRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         if (updateUserDto.getName() != null) {
             user.setName(updateUserDto.getName());
         }
-
         if (updateUserDto.getEmail() != null) {
             user.setEmail(updateUserDto.getEmail());
+        }
+        if (updateUserDto.getPassword() != null) { // null check added
+            user.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
         }
 
         userRepository.save(user);

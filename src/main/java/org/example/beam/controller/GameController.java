@@ -32,12 +32,12 @@ public class GameController {
         return "Game added successfully";
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public String updateGame(@PathVariable Long id, @RequestBody UpdateGameDto updateGameDto){
 
         gameService.updateGame(id, updateGameDto);

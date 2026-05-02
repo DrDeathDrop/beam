@@ -30,12 +30,12 @@ public class PublisherController {
         return "Publisher added successfully";
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deletePublisher(@PathVariable Long id) {
         publisherService.deletePublisher(id);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public String updatePublisher(@PathVariable Long id, @RequestBody UpdatePublisherDto updatePublisherDto){
 
         publisherService.updatePublisher(id, updatePublisherDto);
