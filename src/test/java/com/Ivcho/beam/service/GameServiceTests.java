@@ -7,10 +7,8 @@ import com.Ivcho.beam.model.Game;
 import com.Ivcho.beam.model.Publisher;
 import com.Ivcho.beam.repository.GameRepository;
 import com.Ivcho.beam.repository.PublisherRepository;
-import org.example.beam.dto.*;
 import com.Ivcho.beam.mapper.GameMapper;
-import org.example.beam.model.*;
-import org.example.beam.repository.*;
+
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 

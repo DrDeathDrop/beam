@@ -10,9 +10,6 @@ import com.Ivcho.beam.model.User;
 import com.Ivcho.beam.repository.GameRepository;
 import com.Ivcho.beam.repository.PurchaseRepository;
 import com.Ivcho.beam.repository.UserRepository;
-import org.example.beam.enumeration.*;
-import org.example.beam.model.*;
-import org.example.beam.repository.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 

@@ -4,7 +4,7 @@ import com.Ivcho.beam.dto.CreateUserDto;
 import com.Ivcho.beam.dto.ShowUserDto;
 import com.Ivcho.beam.dto.UpdateUserDto;
 import org.mockito.*;
-import org.example.beam.dto.*;
+
 import com.Ivcho.beam.service.UserService;
 import org.junit.jupiter.api.*;
 

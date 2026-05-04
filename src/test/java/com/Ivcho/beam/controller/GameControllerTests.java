@@ -3,7 +3,7 @@ package com.Ivcho.beam.controller;
 import com.Ivcho.beam.dto.CreateGameDto;
 import com.Ivcho.beam.dto.ShowGameDto;
 import com.Ivcho.beam.dto.UpdateGameDto;
-import org.example.beam.dto.*;
+
 import com.Ivcho.beam.repository.GameRepository;
 import com.Ivcho.beam.service.GameService;
 import org.junit.jupiter.api.BeforeEach;

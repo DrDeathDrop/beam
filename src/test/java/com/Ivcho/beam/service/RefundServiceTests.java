@@ -5,8 +5,7 @@ import com.Ivcho.beam.model.Purchase;
 import com.Ivcho.beam.model.User;
 import com.Ivcho.beam.repository.PurchaseRepository;
 import com.Ivcho.beam.repository.UserRepository;
-import org.example.beam.model.*;
-import org.example.beam.repository.*;
+
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import java.util.Optional;

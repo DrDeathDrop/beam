@@ -4,7 +4,7 @@ package com.Ivcho.beam.service;
 import com.Ivcho.beam.dto.CreateUserDto;
 import com.Ivcho.beam.dto.ShowUserDto;
 import com.Ivcho.beam.dto.UpdateUserDto;
-import org.example.beam.dto.*;
+
 import com.Ivcho.beam.mapper.UserMapper;
 import com.Ivcho.beam.model.User;
 import com.Ivcho.beam.repository.UserRepository;
