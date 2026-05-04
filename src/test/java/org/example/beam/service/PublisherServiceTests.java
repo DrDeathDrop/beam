@@ -1,6 +1,7 @@
 package org.example.beam.service;
 
 import org.example.beam.dto.*;
+import org.example.beam.mapper.PublisherMapper;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.PublisherRepository;
 import org.junit.jupiter.api.*;
@@ -18,6 +19,9 @@ class PublisherServiceTests {
 
     @Mock
     private PublisherRepository publisherRepository;
+
+    @Mock
+    private PublisherMapper publisherMapper;
 
     @BeforeEach
     void setUp() {
@@ -139,7 +143,14 @@ class PublisherServiceTests {
         publisher.setWebsite("ea.com");
         publisher.setFounded("1982");
 
+        ShowPublisherDto expectedDto = new ShowPublisherDto("Electronic Arts"
+                , "USA"
+                , "40"
+                , "ea.com"
+                , "1982");
+
         when(publisherRepository.findById(id)).thenReturn(Optional.of(publisher));
+        when(publisherMapper.toDto(publisher)).thenReturn(expectedDto);
 
         ShowPublisherDto result = publisherService.getPublisher(id);
 
