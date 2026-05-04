@@ -92,10 +92,7 @@ class UserControllerTest {
 
     @Test
     void getAllUsers_callsService() {
-        List<ShowUserDto> users = List.of(
-                new ShowUserDto(1L, "user1", "user1@email.com"),
-                new ShowUserDto(2L, "user2", "user2@email.com")
-        );
+        List<ShowUserDto> users = List.of(new ShowUserDto(1L, "user1", "user1@email.com"), new ShowUserDto(2L, "user2", "user2@email.com"));
         when(userService.getAllUsers()).thenReturn(users);
         List<ShowUserDto> result = userController.getAllUsers();
         assertEquals(2, result.size());

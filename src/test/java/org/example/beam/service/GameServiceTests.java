@@ -1,6 +1,7 @@
 package org.example.beam.service;
 
 import org.example.beam.dto.*;
+import org.example.beam.mapper.GameMapper;
 import org.example.beam.model.*;
 import org.example.beam.repository.*;
 import org.junit.jupiter.api.*;
@@ -23,6 +24,9 @@ class GameServiceTests {
     @Mock
     private PublisherRepository publisherRepository;
 
+    @Mock
+    private GameMapper gameMapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -31,25 +35,25 @@ class GameServiceTests {
     @Test
     void createGame_success() {
         CreateGameDto dto = new CreateGameDto(
-                "Test Game",           // title
-                "Action",              // genre
-                BigDecimal.valueOf(59.99), // price
-                1L,                    // publisherId
-                "Cool game",           // description
-                "2024"                 // releaseDate
+                "Test Game",
+                "Action",
+                BigDecimal.valueOf(59.99),
+                1L,
+                "Cool game",
+                "2024"
         );
 
         Publisher publisher = new Publisher();
-        publisher.setId(10L);
+        publisher.setId(1L);
         publisher.setName("Epic Games");
 
-        when(publisherRepository.findById(10L)).thenReturn(Optional.of(publisher));
+        when(publisherRepository.findById(1L)).thenReturn(Optional.of(publisher));
         when(gameRepository.save(any(Game.class))).thenAnswer(i -> i.getArguments()[0]);
 
         Game savedGame = gameService.createGame(dto);
 
         assertNotNull(savedGame);
-        assertEquals("Service Game", savedGame.getTitle());
+        assertEquals("Test Game", savedGame.getTitle());
         assertEquals("Epic Games", savedGame.getPublisher().getName());
         verify(gameRepository).save(any(Game.class));
     }
@@ -91,12 +95,10 @@ class GameServiceTests {
         Game existingGame = new Game();
         existingGame.setTitle("Old Title");
 
-        UpdateGameDto updateDto = new UpdateGameDto();
-        updateDto.setTitle("New Title");
-        updateDto.setPublisherId(2L);
-
         Publisher newPublisher = new Publisher();
         newPublisher.setName("New Publisher");
+
+        UpdateGameDto updateDto = new UpdateGameDto("New Title", null, null, null, null, 2L);
 
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(existingGame));
         when(publisherRepository.findById(2L)).thenReturn(Optional.of(newPublisher));
@@ -116,8 +118,7 @@ class GameServiceTests {
         existingGame.setTitle("Old Title");
         existingGame.setGenre("Action");
 
-        UpdateGameDto updateDto = new UpdateGameDto();
-        updateDto.setTitle("Only Title Updated");
+        UpdateGameDto updateDto = new UpdateGameDto("Only Title Updated", null, null, null, null, null);
 
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(existingGame));
         when(gameRepository.save(any(Game.class))).thenAnswer(i -> i.getArguments()[0]);
@@ -127,6 +128,19 @@ class GameServiceTests {
         assertEquals("Only Title Updated", result.getTitle());
         assertEquals("Action", result.getGenre());
         verify(publisherRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void updateGame_notFound_throwsException() {
+        when(gameRepository.findById(99L)).thenReturn(Optional.empty());
+
+        UpdateGameDto dto = new UpdateGameDto("Title", null, null, null, null, null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> gameService.updateGame(99L, dto));
+
+        assertEquals("Game not found", exception.getMessage());
+        verify(gameRepository, never()).save(any());
     }
 
     @Test
@@ -145,7 +159,11 @@ class GameServiceTests {
         game.setReleaseDate("2024");
         game.setPublisher(publisher);
 
+        ShowGameDto expectedDto = new ShowGameDto(gameId, "Test Game", "Action",
+                BigDecimal.valueOf(49.99), "Test Publisher", "A test game", "2024");
+
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
+        when(gameMapper.toDto(game)).thenReturn(expectedDto);
 
         ShowGameDto result = gameService.getGame(gameId);
 
@@ -168,5 +186,4 @@ class GameServiceTests {
         assertEquals("Game not found", exception.getMessage());
         verify(gameRepository).findById(99L);
     }
-
 }

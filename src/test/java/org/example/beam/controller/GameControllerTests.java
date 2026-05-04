@@ -60,7 +60,13 @@ class GameControllerTests {
 
     @Test
     void updateGame_success() {
+        Long id = 1L;
+        UpdateGameDto dto = new UpdateGameDto("Updated Title", "RPG", BigDecimal.valueOf(39.99), "2025", "New desc", null);
 
+        String result = gameController.updateGame(id, dto);
+
+        assertEquals("Game updated successfully", result);
+        verify(gameService).updateGame(id, dto);
     }
 
 

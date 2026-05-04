@@ -13,7 +13,7 @@ public class PublisherController {
     private PublisherService publisherService;
 
     @PostMapping("/add")
-    public String addPublisher(@RequestBody CreatePublisherDto createPublisherDto){
+    public String addPublisher(@RequestBody CreatePublisherDto createPublisherDto) {
         if (createPublisherDto.name() == null
                 || createPublisherDto.country() == null
                 || createPublisherDto.founded() == null
@@ -28,17 +28,20 @@ public class PublisherController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePublisher(@PathVariable Long id) {
+
         publisherService.deletePublisher(id);
     }
 
     @PutMapping("/update/{id}")
-    public String updatePublisher(@PathVariable Long id, @RequestBody UpdatePublisherDto updatePublisherDto){
+    public String updatePublisher(@PathVariable Long id, @RequestBody UpdatePublisherDto updatePublisherDto) {
 
         publisherService.updatePublisher(id, updatePublisherDto);
         return "Publisher updated successfully";
     }
+
     @GetMapping("/view/{id}")
     public ShowPublisherDto getPublisher(@PathVariable Long id) {
+
         return publisherService.getPublisher(id);
     }
 }

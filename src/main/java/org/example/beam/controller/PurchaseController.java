@@ -25,6 +25,7 @@ public class PurchaseController {
 
     @GetMapping("/show/{id}")
     public ShowPurchaseDto showPurchase(@PathVariable Long id) {
+
         return purchaseService.getPurchases(id);
     }
 }

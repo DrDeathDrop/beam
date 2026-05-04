@@ -13,9 +13,9 @@ public class GameController {
     private GameService gameService;
 
     @PostMapping("/add")
-    public String addGame(@RequestBody CreateGameDto createGameDto){
+    public String addGame(@RequestBody CreateGameDto createGameDto) {
         if (createGameDto == null
-                ||createGameDto.title() == null
+                || createGameDto.title() == null
                 || createGameDto.price() == null
                 || createGameDto.genre() == null
                 || createGameDto.description() == null
@@ -33,7 +33,7 @@ public class GameController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateGame(@PathVariable Long id, @RequestBody UpdateGameDto updateGameDto){
+    public String updateGame(@PathVariable Long id, @RequestBody UpdateGameDto updateGameDto) {
 
         gameService.updateGame(id, updateGameDto);
         return "Game updated successfully";
@@ -41,6 +41,7 @@ public class GameController {
 
     @GetMapping("/view/{id}")
     public ShowGameDto getGame(@PathVariable Long id) {
+
         return gameService.getGame(id);
     }
 }

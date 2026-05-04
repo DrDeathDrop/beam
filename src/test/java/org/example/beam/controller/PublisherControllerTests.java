@@ -56,13 +56,26 @@ class PublisherControllerTests {
 
     @Test
     void updatePublisher_success() {
+        Long id = 1L;
+        UpdatePublisherDto dto = new UpdatePublisherDto("New Name", null, null, null, null);
 
+        String result = publisherController.updatePublisher(id, dto);
+
+        assertEquals("Publisher updated successfully", result);
+        verify(publisherService).updatePublisher(id, dto);
     }
-
 
     @Test
     void getPublisher_success() {
+        ShowPublisherDto dto = new ShowPublisherDto("EA", "USA", "40", "ea.com", "1982");
 
+        when(publisherService.getPublisher(1L)).thenReturn(dto);
+
+        ShowPublisherDto result = publisherController.getPublisher(1L);
+
+        assertNotNull(result);
+        assertEquals("EA", result.name());
+        assertEquals("USA", result.country());
     }
 
     @Test

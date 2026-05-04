@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.beam.dto.CreatePublisherDto;
 import org.example.beam.dto.ShowPublisherDto;
 import org.example.beam.dto.UpdatePublisherDto;
+import org.example.beam.mapper.PublisherMapper;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.PublisherRepository;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class PublisherService {
     private final PublisherRepository publisherRepository;
+    private final PublisherMapper publisherMapper;
 
-    public PublisherService(PublisherRepository publisherRepository) {
+    public PublisherService(PublisherRepository publisherRepository, PublisherMapper publisherMapper) {
         this.publisherRepository = publisherRepository;
+        this.publisherMapper = publisherMapper;
     }
 
     @Transactional
@@ -38,13 +41,7 @@ public class PublisherService {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
 
-        return new ShowPublisherDto(
-                publisher.getName(),
-                publisher.getCountry(),
-                publisher.getYearsOfEstablishment(),
-                publisher.getWebsite(),
-                publisher.getFounded()
-        );
+        return publisherMapper.toDto(publisher);
     }
 
     @Transactional

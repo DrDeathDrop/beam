@@ -101,7 +101,34 @@ class PurchaseServiceTests {
 
     @Test
     void getPurchases_success() {
+        Long userId = 1L;
 
+        User user = new User();
+        user.setId(userId);
+
+        Game game = new Game();
+        game.setTitle("Test Game");
+        game.setPrice(BigDecimal.valueOf(29.99));
+
+        Purchase purchase = new Purchase();
+        purchase.setUser(user);
+        purchase.setGame(game);
+        purchase.setPricePaid(BigDecimal.valueOf(29.99));
+        purchase.setPaymentMethod(PaymentMethod.CREDIT_CARD);
+        purchase.setStatus(PurchaseStatus.COMPLETED);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(purchaseRepository.findAllByUserId(userId)).thenReturn(List.of(purchase));
+
+        ShowPurchaseDto result = purchaseService.getPurchases(userId);
+
+        assertNotNull(result);
+        assertEquals(1, result.gameLibrary().size());
+        PurchaseListDto item = result.gameLibrary().get(0);
+        assertEquals("Test Game", item.gameName());
+        assertEquals(BigDecimal.valueOf(29.99), item.pricePaid());
+        assertEquals(PaymentMethod.CREDIT_CARD, item.paymentMethod());
+        assertEquals(PurchaseStatus.COMPLETED, item.status());
     }
 
     @Test
