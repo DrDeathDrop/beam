@@ -46,14 +46,14 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (updateUserDto.getName() != null) {
-            user.setName(updateUserDto.getName());
+        if (updateUserDto.name() != null) {
+            user.setName(updateUserDto.name());
         }
-        if (updateUserDto.getEmail() != null) {
-            user.setEmail(updateUserDto.getEmail());
+        if (updateUserDto.email() != null) {
+            user.setEmail(updateUserDto.email());
         }
-        if (updateUserDto.getPassword() != null) { // null check added
-            user.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
+        if (updateUserDto.password() != null) {
+            user.setPassword(passwordEncoder.encode(updateUserDto.password()));
         }
 
         userRepository.save(user);

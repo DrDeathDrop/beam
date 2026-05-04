@@ -33,19 +33,15 @@ public class PurchaseService {
 
         List<PurchaseListDto> purchaseDto = purchaseRepository.findAllByUserId(userId)
                 .stream()
-                .map(p -> {
-                    PurchaseListDto dto = new PurchaseListDto();
-                    dto.setGameName(p.getGame().getTitle());
-                    dto.setPricePaid(p.getPricePaid());
-                    dto.setPaymentMethod(p.getPaymentMethod());
-                    dto.setStatus(p.getStatus());
-                    return dto;
-                })
+                .map(p -> new PurchaseListDto(
+                        p.getPricePaid(),
+                        p.getPaymentMethod(),
+                        p.getStatus(),
+                        p.getGame().getTitle()
+                ))
                 .toList();
 
-        ShowPurchaseDto dto = new ShowPurchaseDto();
-        dto.setGameLibrary(purchaseDto);
-        return dto;
+        return new ShowPurchaseDto(purchaseDto);
     }
 
     @Transactional
@@ -67,4 +63,3 @@ public class PurchaseService {
         return purchaseRepository.save(purchase);
     }
 }
-

@@ -52,28 +52,28 @@ public class GameService {
         Game game = gameRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Game not found"));
 
-       if (updateGameDto.getTitle() != null) {
-           game.setTitle(updateGameDto.getTitle());
+       if (updateGameDto.title() != null) {
+           game.setTitle(updateGameDto.title());
        }
 
-       if (updateGameDto.getGenre() != null) {
-           game.setGenre(updateGameDto.getGenre());
+       if (updateGameDto.genre() != null) {
+           game.setGenre(updateGameDto.genre());
        }
 
-       if (updateGameDto.getPrice() != null) {
-           game.setPrice(updateGameDto.getPrice());
+       if (updateGameDto.price() != null) {
+           game.setPrice(updateGameDto.price());
        }
 
-       if (updateGameDto.getReleaseDate() != null) {
-           game.setReleaseDate(updateGameDto.getReleaseDate());
+       if (updateGameDto.releaseDate() != null) {
+           game.setReleaseDate(updateGameDto.releaseDate());
        }
 
-       if (updateGameDto.getDescription() != null) {
-           game.setDescription(updateGameDto.getDescription());
+       if (updateGameDto.description() != null) {
+           game.setDescription(updateGameDto.description());
        }
 
-       if (updateGameDto.getPublisherId() != null) {
-           Publisher publisher = publisherRepository.findById(updateGameDto.getPublisherId())
+       if (updateGameDto.publisherId() != null) {
+           Publisher publisher = publisherRepository.findById(updateGameDto.publisherId())
                .orElseThrow(() -> new RuntimeException("Publisher not found"));
            game.setPublisher(publisher);
        }

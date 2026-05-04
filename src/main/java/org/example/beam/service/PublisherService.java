@@ -19,11 +19,11 @@ public class PublisherService {
     @Transactional
     public Publisher createPublisher(CreatePublisherDto createPublisherDto) {
         Publisher publisher = new Publisher();
-        publisher.setName(createPublisherDto.getName());
-        publisher.setCountry(createPublisherDto.getCountry());
-        publisher.setYearsOfEstablishment(createPublisherDto.getYearsOfEstablishment());
-        publisher.setWebsite(createPublisherDto.getWebsite());
-        publisher.setFounded(createPublisherDto.getFounded());
+        publisher.setName(createPublisherDto.name());
+        publisher.setCountry(createPublisherDto.country());
+        publisher.setYearsOfEstablishment(createPublisherDto.yearsOfEstablishment());
+        publisher.setWebsite(createPublisherDto.website());
+        publisher.setFounded(createPublisherDto.founded());
         return publisherRepository.save(publisher);
     }
     @Transactional
@@ -38,14 +38,13 @@ public class PublisherService {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
 
-        ShowPublisherDto dto = new ShowPublisherDto();
-        dto.setName(publisher.getName());
-        dto.setCountry(publisher.getCountry());
-        dto.setFounded(publisher.getFounded());
-        dto.setWebsite(publisher.getWebsite());
-        dto.setYearsOfEstablishment(publisher.getYearsOfEstablishment());
-
-        return dto;
+        return new ShowPublisherDto(
+                publisher.getName(),
+                publisher.getCountry(),
+                publisher.getYearsOfEstablishment(),
+                publisher.getWebsite(),
+                publisher.getFounded()
+        );
     }
 
     @Transactional
@@ -53,20 +52,20 @@ public class PublisherService {
         Publisher publisher = publisherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
 
-        if (updatePublisherDto.getName() != null) {
-            publisher.setName(updatePublisherDto.getName());
+        if (updatePublisherDto.name() != null) {
+            publisher.setName(updatePublisherDto.name());
         }
-        if (updatePublisherDto.getCountry() != null) {
-            publisher.setCountry(updatePublisherDto.getCountry());
+        if (updatePublisherDto.country() != null) {
+            publisher.setCountry(updatePublisherDto.country());
         }
-        if (updatePublisherDto.getYearsOfEstablishment() != null) {
-            publisher.setYearsOfEstablishment(updatePublisherDto.getYearsOfEstablishment());
+        if (updatePublisherDto.yearsOfEstablishment() != null) {
+            publisher.setYearsOfEstablishment(updatePublisherDto.yearsOfEstablishment());
         }
-        if (updatePublisherDto.getWebsite() != null) {
-            publisher.setWebsite(updatePublisherDto.getWebsite());
+        if (updatePublisherDto.website() != null) {
+            publisher.setWebsite(updatePublisherDto.website());
         }
-        if (updatePublisherDto.getFounded() != null) {
-            publisher.setFounded(updatePublisherDto.getFounded());
+        if (updatePublisherDto.founded() != null) {
+            publisher.setFounded(updatePublisherDto.founded());
         }
 
         return publisherRepository.save(publisher);
