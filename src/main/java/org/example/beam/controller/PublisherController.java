@@ -1,8 +1,6 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.*;
-import org.example.beam.model.Publisher;
-import org.example.beam.repository.PublisherRepository;
 import org.example.beam.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

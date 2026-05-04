@@ -1,10 +1,14 @@
 package org.example.beam.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "publishers")
 public class Publisher {
@@ -19,64 +23,8 @@ public class Publisher {
     private String founded;
     private String website;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFounded() {
-        return founded;
-    }
-
-    public void setFounded(String founded) {
-        this.founded = founded;
-    }
-
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
     private List<Game> games = new ArrayList<>();
-
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getYearsOfEstablishment() {
-        return yearsOfEstablishment;
-    }
-
-    public void setYearsOfEstablishment(String yearsOfEstablishment) {
-        this.yearsOfEstablishment = yearsOfEstablishment;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
 
 
 }

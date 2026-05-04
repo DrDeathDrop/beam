@@ -5,7 +5,6 @@ import org.example.beam.dto.*;
 import org.example.beam.mapper.UserMapper;
 import org.example.beam.model.*;
 import org.example.beam.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,7 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional
     public ShowUserDto getUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
