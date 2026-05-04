@@ -16,10 +16,10 @@ public class PurchaseController {
     @PostMapping("/buy/{userId}/{id}")
     public String buyGame(@PathVariable Long userId, @PathVariable Long id,
                           @RequestBody CreatePurchaseDto createPurchaseDto) {
-        if (createPurchaseDto.getPaymentMethod() == null) {
+        if (createPurchaseDto.paymentMethod() == null) {
             return "Please provide a valid payment method";
         }
-        purchaseService.buyGame(userId, id, createPurchaseDto.getPaymentMethod());
+        purchaseService.buyGame(userId, id, createPurchaseDto.paymentMethod());
         return "Game purchased successfully";
     }
 

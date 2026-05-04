@@ -35,9 +35,9 @@ public class UserService {
     @Transactional
     public void createUser(CreateUserDto createUserDto) {
         User user = new User();
-        user.setName(createUserDto.getName());
-        user.setEmail(createUserDto.getEmail());
-        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        user.setName(createUserDto.name());
+        user.setEmail(createUserDto.email());
+        user.setPassword(passwordEncoder.encode(createUserDto.password()));
         userRepository.save(user);
     }
 
@@ -57,6 +57,17 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+    public String login(CreateUserDto createUserDto) {
+        User user = userRepository.findByName(createUserDto.name())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(createUserDto.password(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return "Login successful";
     }
 
     @Transactional

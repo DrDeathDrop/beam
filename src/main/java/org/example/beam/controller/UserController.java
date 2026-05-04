@@ -25,9 +25,9 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody CreateUserDto createUserDto) {
-        if (createUserDto.getEmail() == null
-                || createUserDto.getPassword() == null
-                || createUserDto.getName() == null) {
+        if (createUserDto.email() == null
+                || createUserDto.password() == null
+                || createUserDto.name() == null) {
             return "Please provide all the required fields";
         }
         userService.createUser(createUserDto); // no encoding here anymore
@@ -36,14 +36,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody CreateUserDto createUserDto) {
-        Optional<User> userOpt = userRepository.findByName(createUserDto.getName());
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (passwordEncoder.matches(createUserDto.getPassword(), user.getPassword())) {
-                return "Login successful";
-            }
-        }
-        return "Login failed";
+        return userService.login(createUserDto);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -60,6 +53,7 @@ public class UserController {
 
     @GetMapping("/profile/{id}")
     public ShowUserDto getMyProfile(@PathVariable Long id) {
+
         return userService.getUser(id);
     }
 

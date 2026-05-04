@@ -2,6 +2,7 @@ package org.example.beam.service;
 
 import jakarta.transaction.Transactional;
 import org.example.beam.dto.*;
+import org.example.beam.mapper.GameMapper;
 import org.example.beam.model.*;
 import org.example.beam.repository.*;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,13 @@ import java.math.BigDecimal;
 public class GameService {
     private final GameRepository gameRepository;
     private final PublisherRepository publisherRepository;
+    private final GameMapper gameMapper;
 
 
-    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository) {
+    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository, GameMapper gameMapper) {
         this.gameRepository = gameRepository;
         this.publisherRepository = publisherRepository;
-
+        this.gameMapper = gameMapper;
     }
 
     @Transactional
@@ -25,15 +27,7 @@ public class GameService {
         Game game = gameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Game not found"));
 
-        ShowGameDto dto = new ShowGameDto();
-        dto.setTitle(game.getTitle());
-        dto.setGenre(game.getGenre());
-        dto.setPrice(game.getPrice());
-        dto.setDescription(game.getDescription());
-        dto.setReleaseDate(game.getReleaseDate());
-        dto.setPublisherName(game.getPublisher().getName());
-
-        return dto;
+        return gameMapper.toDto(game);
     }
 
     @Transactional
@@ -45,12 +39,14 @@ public class GameService {
 
     @Transactional
     public Game createGame(CreateGameDto createGameDto) {
-        Publisher publisher = publisherRepository.findById(createGameDto.getPublisherId())
-            .orElseThrow(() -> new RuntimeException("Publisher not found"));
-        Game game = new Game(createGameDto.getTitle(), publisher, createGameDto.getReleaseDate(), createGameDto.getGenre(),  createGameDto.getPrice(),  createGameDto.getDescription());
+        Publisher publisher = publisherRepository.findById(createGameDto.publisherId())
+                .orElseThrow(() -> new RuntimeException("Publisher not found"));
+        Game game = new Game(createGameDto.title(), publisher, createGameDto.releaseDate(),
+                createGameDto.genre(), createGameDto.price(), createGameDto.description());
 
         return gameRepository.save(game);
     }
+
     @Transactional
     public Game updateGame(Long id, UpdateGameDto updateGameDto) {
         Game game = gameRepository.findById(id)

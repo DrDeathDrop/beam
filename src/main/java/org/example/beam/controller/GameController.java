@@ -1,10 +1,6 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.*;
-
-import org.example.beam.mapper.GameMapper;
-import org.example.beam.model.Game;
-import org.example.beam.repository.GameRepository;
 import org.example.beam.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +15,12 @@ public class GameController {
     @PostMapping("/add")
     public String addGame(@RequestBody CreateGameDto createGameDto){
         if (createGameDto == null
-                ||createGameDto.getTitle() == null
-                || createGameDto.getPrice() == null
-                || createGameDto.getGenre() == null
-                || createGameDto.getDescription() == null
-                || createGameDto.getReleaseDate() == null
-                || createGameDto.getPublisherId() == null) {
+                ||createGameDto.title() == null
+                || createGameDto.price() == null
+                || createGameDto.genre() == null
+                || createGameDto.description() == null
+                || createGameDto.releaseDate() == null
+                || createGameDto.publisherId() == null) {
             return "Please provide all the required fields";
         }
         gameService.createGame(createGameDto);

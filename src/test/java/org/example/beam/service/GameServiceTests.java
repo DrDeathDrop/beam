@@ -30,9 +30,14 @@ class GameServiceTests {
 
     @Test
     void createGame_success() {
-        CreateGameDto dto = new CreateGameDto();
-        dto.setTitle("Service Game");
-        dto.setPublisherId(10L);
+        CreateGameDto dto = new CreateGameDto(
+                "Test Game",           // title
+                "Action",              // genre
+                BigDecimal.valueOf(59.99), // price
+                1L,                    // publisherId
+                "Cool game",           // description
+                "2024"                 // releaseDate
+        );
 
         Publisher publisher = new Publisher();
         publisher.setId(10L);
@@ -51,8 +56,7 @@ class GameServiceTests {
 
     @Test
     void createGame_publisherNotFound_throwsException() {
-        CreateGameDto dto = new CreateGameDto();
-        dto.setPublisherId(99L);
+        CreateGameDto dto = new CreateGameDto(null, null, null, 99L, null, null);
 
         when(publisherRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -146,12 +150,12 @@ class GameServiceTests {
         ShowGameDto result = gameService.getGame(gameId);
 
         assertNotNull(result);
-        assertEquals("Test Game", result.getTitle());
-        assertEquals("Action", result.getGenre());
-        assertEquals(BigDecimal.valueOf(49.99), result.getPrice());
-        assertEquals("A test game", result.getDescription());
-        assertEquals("2024", result.getReleaseDate());
-        assertEquals("Test Publisher", result.getPublisherName());
+        assertEquals("Test Game", result.title());
+        assertEquals("Action", result.genre());
+        assertEquals(BigDecimal.valueOf(49.99), result.price());
+        assertEquals("A test game", result.description());
+        assertEquals("2024", result.releaseDate());
+        assertEquals("Test Publisher", result.publisherName());
     }
 
     @Test

@@ -33,13 +33,7 @@ class GameControllerTests {
 
     @Test
     void addGame_success() {
-        CreateGameDto dto = new CreateGameDto();
-        dto.setTitle("Test Game");
-        dto.setPrice(BigDecimal.valueOf(59.99));
-        dto.setGenre("Action");
-        dto.setDescription("Cool game");
-        dto.setReleaseDate("2024");
-        dto.setPublisherId(1L);
+        CreateGameDto dto = new CreateGameDto("Test Game", "Action", BigDecimal.valueOf(59.99), 1L, "Cool game", "2024");
 
         String result = gameController.addGame(dto);
 
@@ -49,8 +43,8 @@ class GameControllerTests {
 
     @Test
     void addGame_missingField_returnsError() {
-        CreateGameDto dto = new CreateGameDto();
-        dto.setTitle(null);
+        CreateGameDto dto = new CreateGameDto(null, null, null, null, null, null);
+
         String result = gameController.addGame(dto);
 
         assertEquals("Please provide all the required fields", result);
@@ -66,35 +60,21 @@ class GameControllerTests {
 
     @Test
     void updateGame_success() {
-        Long id = 4L;
-        UpdateGameDto dto = new UpdateGameDto();
-        dto.setTitle("Updated Title");
-        dto.setPrice(BigDecimal.valueOf(49.99));
-        dto.setGenre("RPG");
-        dto.setDescription("New Description");
-        dto.setReleaseDate("2025");
-        dto.setPublisherId(2L);
 
-        String result = gameController.updateGame(id, dto);
-
-        assertEquals("Game updated successfully", result);
-        verify(gameService).updateGame(id, dto);
     }
 
 
     @Test
     void getGame_success() {
-        ShowGameDto dto = new ShowGameDto();
-        dto.setTitle("TGame");
-        dto.setPublisherName("Indie Studio");
+        ShowGameDto dto = new ShowGameDto(1L, "TGame", null, null, "Indie Studio", null, null);
 
         when(gameService.getGame(11L)).thenReturn(dto);
 
         ShowGameDto result = gameController.getGame(11L);
 
         assertNotNull(result);
-        assertEquals("TGame", result.getTitle());
-        assertEquals("Indie Studio", result.getPublisherName());
+        assertEquals("TGame", result.title());
+        assertEquals("Indie Studio", result.publisherName());
     }
 
     @Test

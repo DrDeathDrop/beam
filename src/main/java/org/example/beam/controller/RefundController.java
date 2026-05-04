@@ -11,25 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class RefundController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     RefundService refundService;
-    @Autowired
-    private PurchaseRepository purchaseRepository;
 
     @PostMapping("/{userId}/{id}")
-    public String refundGame(@PathVariable Long userId, @PathVariable Long id){
-
-        Purchase purchase = purchaseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("refund not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-         refundService.refundPurchase(userId, id);
-
-         return "Game refunded successfully";
-
+    public String refundGame(@PathVariable Long userId, @PathVariable Long id) {
+        refundService.refundPurchase(userId, id);
+        return "Game refunded successfully";
     }
 
 }

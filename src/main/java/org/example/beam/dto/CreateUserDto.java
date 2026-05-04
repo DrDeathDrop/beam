@@ -1,14 +1,8 @@
 package org.example.beam.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+public record CreateUserDto(
 
-@Setter
-@Getter
-public class CreateUserDto {
-
-    private String name;
-    private String email;
-    private String password;
-
-}
+     String name,
+     String email,
+     String password
+) {}

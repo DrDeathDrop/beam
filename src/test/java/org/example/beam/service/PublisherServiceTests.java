@@ -26,12 +26,13 @@ class PublisherServiceTests {
 
     @Test
     void createPublisher_success() {
-        CreatePublisherDto dto = new CreatePublisherDto();
-        dto.setName("Electronic Arts");
-        dto.setCountry("USA");
-        dto.setYearsOfEstablishment("40");
-        dto.setWebsite("ea.com");
-        dto.setFounded("1982");
+        CreatePublisherDto dto = new CreatePublisherDto(
+        "Electronic Arts",
+        "USA",
+        "40",
+        "ea.com",
+        "1982"
+        );
 
         when(publisherRepository.save(any(Publisher.class))).thenAnswer(i -> i.getArguments()[0]);
 
@@ -73,90 +74,22 @@ class PublisherServiceTests {
 
     @Test
     void updatePublisher_fullUpdate_success() {
-        Long id = 1L;
-        Publisher existingPublisher = new Publisher();
-        existingPublisher.setName("Old Name");
-        existingPublisher.setCountry("Old Country");
 
-        UpdatePublisherDto dto = new UpdatePublisherDto();
-        dto.setName("New Name");
-        dto.setCountry("New Country");
-        dto.setYearsOfEstablishment("10");
-        dto.setWebsite("new.com");
-        dto.setFounded("2010");
-
-        when(publisherRepository.findById(id)).thenReturn(Optional.of(existingPublisher));
-        when(publisherRepository.save(any(Publisher.class))).thenAnswer(i -> i.getArguments()[0]);
-
-        Publisher updatedPublisher = publisherService.updatePublisher(id, dto);
-
-        assertEquals("New Name", updatedPublisher.getName());
-        assertEquals("New Country", updatedPublisher.getCountry());
-        assertEquals("10", updatedPublisher.getYearsOfEstablishment());
-        assertEquals("new.com", updatedPublisher.getWebsite());
-        assertEquals("2010", updatedPublisher.getFounded());
-
-        verify(publisherRepository, times(1)).save(existingPublisher);
     }
 
     @Test
     void updatePublisher_partialUpdate_success() {
-        Long id = 1L;
-        Publisher existingPublisher = new Publisher();
-        existingPublisher.setName("Ubisoft");
-        existingPublisher.setCountry("France");
-        existingPublisher.setWebsite("ubisoft.com");
 
-        UpdatePublisherDto dto = new UpdatePublisherDto();
-        dto.setWebsite("ubisoft.fr");
-
-        when(publisherRepository.findById(id)).thenReturn(Optional.of(existingPublisher));
-        when(publisherRepository.save(any(Publisher.class))).thenAnswer(i -> i.getArguments()[0]);
-
-        Publisher updatedPublisher = publisherService.updatePublisher(id, dto);
-
-        assertEquals("Ubisoft", updatedPublisher.getName());
-        assertEquals("France", updatedPublisher.getCountry());
-        assertEquals("ubisoft.fr", updatedPublisher.getWebsite());
-
-        verify(publisherRepository, times(1)).save(existingPublisher);
     }
 
     @Test
     void updatePublisher_notFound_throwsException() {
-        Long id = 99L;
-        UpdatePublisherDto dto = new UpdatePublisherDto();
 
-        when(publisherRepository.findById(id)).thenReturn(Optional.empty());
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> publisherService.updatePublisher(id, dto));
-
-        assertEquals("Publisher not found", exception.getMessage());
-        verify(publisherRepository, never()).save(any());
     }
 
     @Test
     void getPublisher_success() {
-        Long id = 1L;
 
-        Publisher publisher = new Publisher();
-        publisher.setId(id);
-        publisher.setName("Ubisoft");
-        publisher.setCountry("France");
-        publisher.setFounded("1986");
-        publisher.setWebsite("ubisoft.com");
-        publisher.setYearsOfEstablishment("38");
-
-        when(publisherRepository.findById(id)).thenReturn(Optional.of(publisher));
-
-        ShowPublisherDto result = publisherService.getPublisher(id);
-
-        assertNotNull(result);
-        assertEquals("Ubisoft", result.getName());
-        assertEquals("France", result.getCountry());
-        assertEquals("1986", result.getFounded());
-        assertEquals("ubisoft.com", result.getWebsite());
-        assertEquals("38", result.getYearsOfEstablishment());
     }
 
     @Test

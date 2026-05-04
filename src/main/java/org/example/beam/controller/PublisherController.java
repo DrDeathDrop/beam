@@ -14,11 +14,11 @@ public class PublisherController {
 
     @PostMapping("/add")
     public String addPublisher(@RequestBody CreatePublisherDto createPublisherDto){
-        if (createPublisherDto.getName() == null
-                || createPublisherDto.getCountry() == null
-                || createPublisherDto.getFounded() == null
-                || createPublisherDto.getWebsite() == null
-                || createPublisherDto.getYearsOfEstablishment() == null) {
+        if (createPublisherDto.name() == null
+                || createPublisherDto.country() == null
+                || createPublisherDto.founded() == null
+                || createPublisherDto.website() == null
+                || createPublisherDto.yearsOfEstablishment() == null) {
             return "Please provide all the required fields";
         }
 

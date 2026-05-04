@@ -1,19 +1,17 @@
 package org.example.beam.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 
+public record CreateGameDto (
 
-@Setter
-@Getter
-public class CreateGameDto {
-    private String title;
-    private String genre;
-    private BigDecimal price;
-    private Long publisherId;
-    private String description;
-    private String releaseDate;
+     String title,
+     String genre,
+     BigDecimal price,
+     Long publisherId,
+     String description,
+     String releaseDate
+    )
 
-}
+{}
