@@ -5,8 +5,7 @@ import com.Ivcho.beam.model.User;
 import com.Ivcho.beam.repository.PurchaseRepository;
 import com.Ivcho.beam.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.example.beam.repository.*;
-import org.example.beam.model.*;
+
 import org.springframework.stereotype.Service;
 import com.Ivcho.beam.enumeration.PurchaseStatus;
 

@@ -8,10 +8,9 @@ import com.Ivcho.beam.model.Publisher;
 import com.Ivcho.beam.repository.GameRepository;
 import com.Ivcho.beam.repository.PublisherRepository;
 import jakarta.transaction.Transactional;
-import org.example.beam.dto.*;
+
 import com.Ivcho.beam.mapper.GameMapper;
-import org.example.beam.model.*;
-import org.example.beam.repository.*;
+
 import org.springframework.stereotype.Service;
 
 @Service

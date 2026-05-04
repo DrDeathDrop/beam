@@ -10,8 +10,7 @@ import jakarta.transaction.Transactional;
 import com.Ivcho.beam.dto.PurchaseListDto;
 import com.Ivcho.beam.dto.ShowPurchaseDto;
 import com.Ivcho.beam.enumeration.PaymentMethod;
-import org.example.beam.repository.*;
-import org.example.beam.model.*;
+
 import org.springframework.stereotype.Service;
 import com.Ivcho.beam.enumeration.PurchaseStatus;
 

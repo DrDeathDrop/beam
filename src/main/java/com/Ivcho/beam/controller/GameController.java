@@ -3,7 +3,7 @@ package com.Ivcho.beam.controller;
 import com.Ivcho.beam.dto.CreateGameDto;
 import com.Ivcho.beam.dto.ShowGameDto;
 import com.Ivcho.beam.dto.UpdateGameDto;
-import org.example.beam.dto.*;
+
 import com.Ivcho.beam.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

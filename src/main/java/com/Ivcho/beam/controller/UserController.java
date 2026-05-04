@@ -3,8 +3,7 @@ package com.Ivcho.beam.controller;
 import com.Ivcho.beam.dto.CreateUserDto;
 import com.Ivcho.beam.dto.ShowUserDto;
 import com.Ivcho.beam.dto.UpdateUserDto;
-import org.example.beam.dto.*;
-import org.example.beam.model.*;
+
 import com.Ivcho.beam.repository.UserRepository;
 import com.Ivcho.beam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
