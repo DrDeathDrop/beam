@@ -1,6 +1,7 @@
 package org.example.beam.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +28,15 @@ public class Publisher {
     private List<Game> games = new ArrayList<>();
 
 
+    public Publisher(String name, String country, String founded, String website, String yearsOfEstablishment) {
+        this.name = name;
+        this.country = country;
+        this.yearsOfEstablishment = yearsOfEstablishment;
+        this.founded = founded;
+        this.website = website;
+    }
+
+    public Publisher() {
+
+    }
 }

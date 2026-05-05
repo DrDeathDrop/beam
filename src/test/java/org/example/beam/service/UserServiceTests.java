@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 class UserServiceTests {
 
-    private UserService userService; // class field, not local variable
+    private UserService userService;
 
     @Mock
     private UserRepository userRepository;

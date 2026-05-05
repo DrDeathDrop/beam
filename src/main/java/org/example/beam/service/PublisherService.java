@@ -21,12 +21,10 @@ public class PublisherService {
 
     @Transactional
     public Publisher createPublisher(CreatePublisherDto createPublisherDto) {
-        Publisher publisher = new Publisher();
-        publisher.setName(createPublisherDto.name());
-        publisher.setCountry(createPublisherDto.country());
-        publisher.setYearsOfEstablishment(createPublisherDto.yearsOfEstablishment());
-        publisher.setWebsite(createPublisherDto.website());
-        publisher.setFounded(createPublisherDto.founded());
+        Publisher publisher = new Publisher(createPublisherDto.name(), createPublisherDto.country(),
+                createPublisherDto.founded(), createPublisherDto.website(),
+                createPublisherDto.yearsOfEstablishment());
+
         return publisherRepository.save(publisher);
     }
     @Transactional

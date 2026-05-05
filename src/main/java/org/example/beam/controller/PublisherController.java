@@ -32,6 +32,7 @@ public class PublisherController {
     public void deletePublisher(@PathVariable Long id) {
 
         publisherService.deletePublisher(id);
+
     }
 
     @PutMapping("/update/{id}")
