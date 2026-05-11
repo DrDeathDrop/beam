@@ -13,6 +13,8 @@ import org.example.beam.mapper.GameMapper;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameService {
     private final GameRepository gameRepository;
@@ -32,6 +34,13 @@ public class GameService {
                 .orElseThrow(() -> new RuntimeException("Game not found"));
 
         return gameMapper.toDto(game);
+    }
+
+    public List<ShowGameDto> getAllGames() {
+        return gameRepository.findAll()
+                .stream()
+                .map(gameMapper::toDto)
+                .toList();
     }
 
     @Transactional

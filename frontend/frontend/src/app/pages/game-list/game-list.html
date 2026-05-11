@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Store</h1>
+
+  @if (loading()) {
+    <p>Loading games...</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <div class="game-grid">
+    @for (game of games(); track game.id) {
+      <div class="game-card" [routerLink]="['/game', game.id]">
+        <h2>{{ game.title }}</h2>
+        <p class="genre">{{ game.genre }}</p>
+        <p class="description">{{ game.description }}</p>
+        <div class="footer">
+          <span class="publisher">{{ game.publisherName }}</span>
+          <span class="price">${{ game.price }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

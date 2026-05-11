@@ -1,0 +1,44 @@
+<div class="container">
+
+  @if (loading()) {
+    <p class="status">Loading game...</p>
+  }
+
+  @if (error()) {
+    <p class="status error">{{ error() }}</p>
+  }
+
+  @if (game()) {
+    <div class="game-detail">
+
+      <div class="header">
+        <h1>{{ game()!.title }}</h1>
+        <span class="genre">{{ game()!.genre }}</span>
+      </div>
+
+      <div class="body">
+        <div class="info">
+          <p class="description">{{ game()!.description }}</p>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span class="label">Publisher</span>
+              <span>{{ game()!.publisherName }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="label">Release Date</span>
+              <span>{{ game()!.releaseDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="purchase-box">
+          <span class="price">${{ game()!.price }}</span>
+          <button class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>
