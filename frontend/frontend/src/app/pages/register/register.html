@@ -1,1 +1,78 @@
-<p>register works!</p>
+<div class="page">
+  <div class="card">
+    <div class="card-header">
+      <h1>Create account</h1>
+      <p class="subtitle">Join Beam - the better Steam</p>
+    </div>
+
+    @if (error()) {
+      <p class="error-banner">{{ error() }}</p>
+    }
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="field">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Your name"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          placeholder="••••••••"
+          required
+        />
+        @if (this.passwordMismatch) {
+          <span class="field-error">Passwords do not match</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading()">
+        @if (loading()) {
+          Creating account…
+        } @else {
+          Create account
+        }
+      </button>
+    </form>
+
+    <p class="footer-link">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </p>
+  </div>
+</div>
+

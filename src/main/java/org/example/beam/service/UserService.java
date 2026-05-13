@@ -62,7 +62,7 @@ public class UserService {
     }
 
     public String login(CreateUserDto createUserDto) {
-        User user = userRepository.findByName(createUserDto.name())
+        User user = userRepository.findByEmail(createUserDto.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(createUserDto.password(), user.getPassword())) {
