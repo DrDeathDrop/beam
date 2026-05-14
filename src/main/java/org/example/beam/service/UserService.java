@@ -1,6 +1,7 @@
 package org.example.beam.service;
 
 import org.example.beam.dto.CreateUserDto;
+import org.example.beam.dto.LoginUserDto;
 import org.example.beam.dto.ShowUserDto;
 import org.example.beam.dto.UpdateUserDto;
 import org.example.beam.model.User;
@@ -61,11 +62,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String login(CreateUserDto createUserDto) {
-        User user = userRepository.findByEmail(createUserDto.email())
+    public String login(LoginUserDto loginUserDto) {
+        User user = userRepository.findByEmail(loginUserDto.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(createUserDto.password(), user.getPassword())) {
+        if (!passwordEncoder.matches(loginUserDto.password(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 

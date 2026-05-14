@@ -1,13 +1,12 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.CreateUserDto;
+import org.example.beam.dto.LoginUserDto;
 import org.example.beam.dto.ShowUserDto;
 import org.example.beam.dto.UpdateUserDto;
 
-import org.example.beam.repository.UserRepository;
 import org.example.beam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -18,13 +17,7 @@ import java.util.*;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // inject the bean
 
     @PostMapping("/register")
     public String registerUser(@RequestBody CreateUserDto createUserDto) {
@@ -38,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody CreateUserDto createUserDto) {
-        return userService.login(createUserDto);
+    public String login(@RequestBody LoginUserDto loginUserDto) {
+        return userService.login(loginUserDto);
     }
 
     @DeleteMapping("/delete/{id}")

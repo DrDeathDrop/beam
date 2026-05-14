@@ -1,6 +1,7 @@
 package org.example.beam.controller;
 
 import org.example.beam.dto.CreateUserDto;
+import org.example.beam.dto.LoginUserDto;
 import org.example.beam.dto.ShowUserDto;
 import org.example.beam.dto.UpdateUserDto;
 import org.mockito.*;
@@ -44,7 +45,7 @@ class UserControllerTest {
 
     @Test
     void login_success() {
-        CreateUserDto dto = new CreateUserDto("test", null, "pwd");
+        LoginUserDto dto = new LoginUserDto( null, "pwd");
         when(userService.login(dto)).thenReturn("Login successful");
         String response = userController.login(dto);
         assertEquals("Login successful", response);
@@ -52,14 +53,14 @@ class UserControllerTest {
 
     @Test
     void login_fail_wrongPassword() {
-        CreateUserDto dto = new CreateUserDto("test", null, "wrong");
+        LoginUserDto dto = new LoginUserDto( null, "wrong");
         when(userService.login(dto)).thenThrow(new RuntimeException("Invalid password"));
         assertThrows(RuntimeException.class, () -> userController.login(dto));
     }
 
     @Test
     void login_fail_userNotFound() {
-        CreateUserDto dto = new CreateUserDto("nope", null, "anything");
+        LoginUserDto dto = new LoginUserDto( "hi", null);
         when(userService.login(dto)).thenThrow(new RuntimeException("User not found"));
         assertThrows(RuntimeException.class, () -> userController.login(dto));
     }
