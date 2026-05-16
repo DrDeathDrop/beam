@@ -31,10 +31,13 @@ class UserServiceTests {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private JwtService jwtService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserService(userRepository, passwordEncoder, userMapper);
+        userService = new UserService(userRepository, passwordEncoder, userMapper, jwtService);
     }
 
     @Test
@@ -116,6 +119,7 @@ class UserServiceTests {
         User u1 = new User(); u1.setId(1L); u1.setName("alice"); u1.setEmail("a@email.com");
         User u2 = new User(); u2.setId(2L); u2.setName("bob");   u2.setEmail("b@email.com");
 
+        //TODO: Fix the tests
         ShowUserDto dto1 = new ShowUserDto(1L, "alice", "a@email.com");
         ShowUserDto dto2 = new ShowUserDto(2L, "bob",   "b@email.com");
 

@@ -19,11 +19,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.jwtService = jwtService;
     }
 
 
@@ -70,7 +72,8 @@ public class UserService {
             throw new RuntimeException("Invalid password");
         }
 
-        return "Login successful";
+        return jwtService.generateToken(user.getEmail(), user.getRole().name());
+
     }
 
     @Transactional
@@ -79,6 +82,13 @@ public class UserService {
         return users.stream()
                 .map(userMapper::toDto)
                 .toList();
+    }
+
+    public ShowUserDto getProfile(String token) {
+        String email = jwtService.extractEmail(token);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toDto(user);
     }
 
     @Transactional

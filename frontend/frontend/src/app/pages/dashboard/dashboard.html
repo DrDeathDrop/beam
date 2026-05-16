@@ -1,0 +1,85 @@
+<div class="dashboard">
+  <div class="topbar">
+    <h1>Admin Dashboard</h1>
+    <button class="btn-logout" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="sections">
+
+    <section class="section">
+      <h2>Games</h2>
+
+      <div class="form-card">
+        <h3>{{ editingGame() ? 'Edit Game' : 'Add Game' }}</h3>
+        <input [(ngModel)]="gameForm.title" placeholder="Title" />
+        <input [(ngModel)]="gameForm.genre" placeholder="Genre" />
+        <input [(ngModel)]="gameForm.price" type="number" placeholder="Price" />
+        <select [(ngModel)]="gameForm.publisherId">
+          <option disabled [ngValue]="0">Select Publisher</option>
+          @for (publisher of publishers(); track publisher.id) {
+            <option [ngValue]="publisher.id">{{ publisher.name }}</option>
+          }
+        </select>
+        <input [(ngModel)]="gameForm.description" placeholder="Description" />
+        <input [(ngModel)]="gameForm.releaseDate" placeholder="Release Date (DD/MM/YYYY)" />
+        <div class="form-actions">
+          <button class="btn-primary" (click)="submitGame()">
+            {{ editingGame() ? 'Update' : 'Add' }}
+          </button>
+          @if (editingGame()) {
+            <button class="btn-secondary" (click)="resetGameForm()">Cancel</button>
+          }
+        </div>
+      </div>
+
+      <div class="list">
+        @for (game of games(); track game.id) {
+          <div class="list-item">
+            <div class="item-info">
+              <span class="item-name">{{ game.title }}</span>
+              <span class="item-sub">{{ game.genre }} — ${{ game.price }}</span>
+            </div>
+            <div class="item-actions">
+              <button class="btn-edit" (click)="editGame(game)">Edit</button>
+              <button class="btn-delete" (click)="deleteGame(game.id)">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- USERS -->
+    <section class="section">
+      <h2>Users</h2>
+
+      @if (editingUser()) {
+        <div class="form-card">
+          <h3>Edit User</h3>
+          <input [(ngModel)]="userForm.name" placeholder="Name" />
+          <input [(ngModel)]="userForm.email" placeholder="Email" />
+          <input [(ngModel)]="userForm.password" type="password" placeholder="New Password (optional)" />
+          <div class="form-actions">
+            <button class="btn-primary" (click)="submitUser()">Update</button>
+            <button class="btn-secondary" (click)="resetUserForm()">Cancel</button>
+          </div>
+        </div>
+      }
+
+      <div class="list">
+        @for (user of users(); track user.id) {
+          <div class="list-item">
+            <div class="item-info">
+              <span class="item-name">{{ user.name }}</span>
+              <span class="item-sub">{{ user.email }}</span>
+            </div>
+            <div class="item-actions">
+              <button class="btn-edit" (click)="editUser(user)">Edit</button>
+              <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+  </div>
+</div>

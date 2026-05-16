@@ -53,6 +53,11 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @GetMapping("/profile")
+    public ShowUserDto getProfile(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        return userService.getProfile(token);
+    }
 
     @GetMapping("/show/all")
     public List<ShowUserDto> getAllUsers() {

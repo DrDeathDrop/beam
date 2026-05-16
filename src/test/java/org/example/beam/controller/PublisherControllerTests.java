@@ -17,8 +17,6 @@ class PublisherControllerTests {
     @InjectMocks
     private PublisherController publisherController;
 
-    @Mock
-    private PublisherRepository publisherRepository;
 
     @Mock
     private PublisherService publisherService;
@@ -64,7 +62,7 @@ class PublisherControllerTests {
 
     @Test
     void getPublisher_success() {
-        ShowPublisherDto dto = new ShowPublisherDto("EA", "USA", "40", "ea.com", "1982");
+        ShowPublisherDto dto = new ShowPublisherDto(3L,"EA", "USA", "40", "ea.com", "1982");
 
         when(publisherService.getPublisher(1L)).thenReturn(dto);
 

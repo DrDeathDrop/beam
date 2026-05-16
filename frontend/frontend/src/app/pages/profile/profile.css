@@ -1,0 +1,83 @@
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.profile-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  background: #2a9d8f;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.profile-card h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.email {
+  color: #666;
+  margin: 0;
+}
+
+.section h2 {
+  margin-bottom: 1rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.game-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.game-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.price {
+  color: #2a9d8f;
+  font-weight: 600;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.status {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.empty {
+  color: #999;
+}

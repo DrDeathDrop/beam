@@ -9,6 +9,8 @@ import org.example.beam.model.Publisher;
 import org.example.beam.repository.PublisherRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PublisherService {
     private final PublisherRepository publisherRepository;
@@ -40,6 +42,13 @@ public class PublisherService {
                 .orElseThrow(() -> new RuntimeException("Publisher not found"));
 
         return publisherMapper.toDto(publisher);
+    }
+
+    public List<ShowPublisherDto> getAllPublishers() {
+        return publisherRepository.findAll()
+                .stream()
+                .map(publisherMapper::toDto)
+                .toList();
     }
 
     @Transactional

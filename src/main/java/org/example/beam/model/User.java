@@ -3,6 +3,7 @@ package org.example.beam.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.beam.enumeration.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class User {
     private String email;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     private String registrationDate;
 

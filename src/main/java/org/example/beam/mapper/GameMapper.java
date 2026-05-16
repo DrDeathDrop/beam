@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface GameMapper {
 
     @Mapping(source = "publisher.name", target = "publisherName")
+    @Mapping(source = "publisher.id", target = "publisherId")
     ShowGameDto toDto(Game game);
 }

@@ -1,8 +1,5 @@
 package org.example.beam.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 
 public record ShowGameDto(
@@ -10,6 +7,7 @@ public record ShowGameDto(
         String title,
         String genre,
         BigDecimal price,
+        Long publisherId,
         String publisherName,
         String description,
         String releaseDate

@@ -23,13 +23,23 @@ export class Login {
     this.loading.set(true);
 
     this.userService.login(this.email, this.password).subscribe({
-      next: () => {
-        this.router.navigate(['/store']);
+      next: (token) => {
+        localStorage.setItem('token', token);
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+
+        if (payload.role === 'ADMIN') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/store']);
+        }
       },
-      error: (err) => {
-        this.error.set(err.error?.message ?? 'Login failed. Please try again.');
-        this.loading.set(false);
-      },
+      error: () => {
+        this.error.set('Invalid credentials');
+
+      }
     });
   }
+
+
 }

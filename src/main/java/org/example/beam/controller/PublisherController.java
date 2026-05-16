@@ -7,6 +7,8 @@ import org.example.beam.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/publishers")
 public class PublisherController {
@@ -26,6 +28,11 @@ public class PublisherController {
 
         publisherService.createPublisher(createPublisherDto);
         return "Publisher added successfully";
+    }
+
+    @GetMapping("/all")
+    public List<ShowPublisherDto> getAllPublishers() {
+        return publisherService.getAllPublishers();
     }
 
     @DeleteMapping("/delete/{id}")
