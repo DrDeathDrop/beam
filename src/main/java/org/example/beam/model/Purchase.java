@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @Entity
-@Table(name = "purchases")
+@Table(name = "purchase")
 public class Purchase {
 
     @Id

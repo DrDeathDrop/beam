@@ -84,6 +84,7 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional
     public ShowUserDto getProfile(String token) {
         String email = jwtService.extractEmail(token);
         User user = userRepository.findByEmail(email)
