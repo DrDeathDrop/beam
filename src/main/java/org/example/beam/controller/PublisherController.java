@@ -4,7 +4,6 @@ import org.example.beam.dto.CreatePublisherDto;
 import org.example.beam.dto.ShowPublisherDto;
 import org.example.beam.dto.UpdatePublisherDto;
 import org.example.beam.service.PublisherService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/publishers")
 public class PublisherController {
 
-    @Autowired
-    private PublisherService publisherService;
+    private final PublisherService publisherService;
+
+    public PublisherController(PublisherService publisherService) {
+        this.publisherService = publisherService;
+    }
 
     @PostMapping("/add")
     public String addPublisher(@RequestBody CreatePublisherDto createPublisherDto) {

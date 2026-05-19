@@ -50,9 +50,8 @@ public class PurchaseService {
     }
 
     @Transactional
-    public Purchase buyGame(Long userId, Long gameId, PaymentMethod paymentMethod) {
-
-        User user = userRepository.findById(userId)
+    public Purchase buyGame(String email, Long gameId, PaymentMethod paymentMethod) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Game game = gameRepository.findById(gameId)

@@ -6,7 +6,6 @@ import org.example.beam.dto.ShowUserDto;
 import org.example.beam.dto.UpdateUserDto;
 
 import org.example.beam.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -16,8 +15,11 @@ import java.util.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public String registerUser(@RequestBody CreateUserDto createUserDto) {

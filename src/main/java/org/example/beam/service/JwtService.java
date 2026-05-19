@@ -3,6 +3,7 @@ package org.example.beam.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -11,12 +12,13 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET = "7b0aaf33feaa3f89f189c5f162bf03c26abc01d6d3ce535d953079ec5a816b07";
+    private final SecretKey secretKey;
     private static final int EXPIRATION_MS = 86400000;
 
-    private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    public JwtService(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
+
 
     public String generateToken(String email, String role) {
         return Jwts.builder()
@@ -24,14 +26,14 @@ public class JwtService {
                 .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                .signWith(getSecretKey())
+                .signWith(this.secretKey)
                 .compact();
     }
 
     public boolean isTokenValid(String token) {
         try {
             Jwts.parser()
-                    .verifyWith(getSecretKey())
+                    .verifyWith(this.secretKey)
                     .build()
                     .parseSignedClaims(token);
             return true;
@@ -42,7 +44,7 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSecretKey())
+                .verifyWith(this.secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

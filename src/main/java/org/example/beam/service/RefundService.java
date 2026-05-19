@@ -21,26 +21,21 @@ public class RefundService {
     }
 
     @Transactional
-    public Purchase refundPurchase(Long userId, Long purchaseId) {
-
-        User user = userRepository.findById(userId)
+    public Purchase refundPurchase(String email, Long purchaseId) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Purchase purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new RuntimeException("Couldn't find the specified purchase"));
 
-        if (!purchase.getUser().getId().equals(userId)) {
-            throw new RuntimeException("You do not have this product, so no refunds :)");
+        if (!purchase.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("This purchase does not belong to you");
         }
-
         if (purchase.getStatus() == PurchaseStatus.REFUNDED) {
             throw new RuntimeException("Purchase has already been refunded");
         }
 
         purchase.setStatus(PurchaseStatus.REFUNDED);
-        Purchase refundedPurchase = purchaseRepository.save(purchase);
-
-        return refundedPurchase;
-
+        return purchaseRepository.save(purchase);
     }
 }
 
