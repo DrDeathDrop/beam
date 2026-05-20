@@ -25,6 +25,7 @@ export class Login {
     this.userService.login(this.email, this.password).subscribe({
       next: (token) => {
         localStorage.setItem('token', token);
+        this.loading.set(false);
 
         const payload = JSON.parse(atob(token.split('.')[1]));
 
@@ -36,6 +37,7 @@ export class Login {
       },
       error: () => {
         this.error.set('Invalid credentials');
+        this.loading.set(false);
 
       }
     });

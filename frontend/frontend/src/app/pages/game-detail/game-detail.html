@@ -34,7 +34,15 @@
 
         <div class="purchase-box">
           <span class="price">${{ game()!.price }}</span>
-          <button class="buy-btn">Buy Now</button>
+          <select (change)="paymentMethod.set($any($event.target).value)">
+            <option value="CREDIT_CARD">Credit Card</option>
+            <option value="DEBIT_CARD">Debit Card</option>
+            <option value="G_PAY">Google Pay</option>
+            <option value="BEAM_WALLET">Beam Wallet</option>
+          </select>
+
+          <button (click)="buyGame()">Buy</button>
+          <button class="buy-btn"(click) = "buyGame()">Buy Now</button>
         </div>
       </div>
 

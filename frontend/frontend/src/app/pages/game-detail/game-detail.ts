@@ -17,8 +17,28 @@ export class GameDetail implements OnInit{
   loading = signal(true);
   error = signal('');
 
+  paymentMethod = signal<string>('CREDIT_CARD');
+
+  buyGame() {
+    const game = this.game();
+    if (!game) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.error.set('You must be logged in to buy a game.');
+      return;
+    }
+
+    const userId = JSON.parse(atob(token.split('.')[1])).sub;
+
+    this.gameService.buyGame(game.id, userId, this.paymentMethod(), token).subscribe({
+      next: () => { },
+      error: () => this.error.set('Purchase failed.')
+    });
+  }
+
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));  // grabs :id from the URL
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.gameService.getGame(id).subscribe({
       next: (data) => {
