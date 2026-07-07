@@ -10,6 +10,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     Optional<Purchase> findById(Long id);
     List<Purchase> findAllByUserId(Long userId);
 
-
+    void deleteAllByGame_Id(Long gameId);
 
 }

@@ -7,6 +7,7 @@ import org.example.beam.model.Game;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.GameRepository;
 import org.example.beam.repository.PublisherRepository;
+import org.example.beam.repository.PurchaseRepository;
 import org.example.beam.mapper.GameMapper;
 
 import org.junit.jupiter.api.*;
@@ -28,6 +29,9 @@ class GameServiceTests {
 
     @Mock
     private PublisherRepository publisherRepository;
+
+    @Mock
+    private PurchaseRepository purchaseRepository;
 
     @Mock
     private GameMapper gameMapper;
@@ -83,6 +87,7 @@ class GameServiceTests {
 
         gameService.deleteGame(gameId);
 
+        verify(purchaseRepository).deleteAllByGame_Id(gameId);
         verify(gameRepository).delete(game);
     }
 

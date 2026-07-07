@@ -7,6 +7,7 @@ import org.example.beam.model.Game;
 import org.example.beam.model.Publisher;
 import org.example.beam.repository.GameRepository;
 import org.example.beam.repository.PublisherRepository;
+import org.example.beam.repository.PurchaseRepository;
 import jakarta.transaction.Transactional;
 
 import org.example.beam.mapper.GameMapper;
@@ -19,12 +20,14 @@ import java.util.List;
 public class GameService {
     private final GameRepository gameRepository;
     private final PublisherRepository publisherRepository;
+    private final PurchaseRepository purchaseRepository;
     private final GameMapper gameMapper;
 
 
-    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository, GameMapper gameMapper) {
+    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository, PurchaseRepository purchaseRepository, GameMapper gameMapper) {
         this.gameRepository = gameRepository;
         this.publisherRepository = publisherRepository;
+        this.purchaseRepository = purchaseRepository;
         this.gameMapper = gameMapper;
     }
 
@@ -44,9 +47,12 @@ public class GameService {
     }
 
     @Transactional
-    public void deleteGame(Long id) { 
+    public void deleteGame(Long id) {
         Game game = gameRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Game not found")); 
+                .orElseThrow(()-> new RuntimeException("Game not found"));
+        // Remove purchases that reference this game first, otherwise the
+        // purchase.game_id foreign key blocks the delete.
+        purchaseRepository.deleteAllByGame_Id(id);
         gameRepository.delete(game);
     }
 

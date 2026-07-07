@@ -23,6 +23,7 @@ export class Dashboard implements OnInit {
 
   games = signal<Game[]>([]);
   users = signal<User[]>([]);
+  error = signal('');
 
   gameForm = { title: '', genre: '', price: 0, publisherId: 0, description: '', releaseDate: '' };
   editingGame = signal<Game | null>(null);
@@ -71,7 +72,11 @@ export class Dashboard implements OnInit {
   }
 
   deleteGame(id: number) {
-    this.gameService.deleteGame(id).subscribe(() => this.loadGames());
+    this.error.set('');
+    this.gameService.deleteGame(id).subscribe({
+      next: () => this.loadGames(),
+      error: () => this.error.set('Could not delete that game.')
+    });
   }
 
   resetGameForm() {
@@ -94,7 +99,11 @@ export class Dashboard implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.userService.deleteUser(id).subscribe(() => this.loadUsers());
+    this.error.set('');
+    this.userService.deleteUser(id).subscribe({
+      next: () => this.loadUsers(),
+      error: () => this.error.set('Could not delete that user.')
+    });
   }
 
   resetUserForm() {
