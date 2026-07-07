@@ -81,7 +81,7 @@ class UserControllerTest {
 
     @Test
     void getMyProfile_success() {
-        ShowUserDto dto = new ShowUserDto(3L, "testuser", "test@beam.com");
+        ShowUserDto dto = new ShowUserDto(3L, "testuser", "test@beam.com", List.of());
         when(userService.getUser(3L)).thenReturn(dto);
         ShowUserDto result = userController.getMyProfile(3L);
         assertEquals("testuser", result.name());
@@ -96,7 +96,7 @@ class UserControllerTest {
 
     @Test
     void getAllUsers_callsService() {
-        List<ShowUserDto> users = List.of(new ShowUserDto(1L, "user1", "user1@email.com"), new ShowUserDto(2L, "user2", "user2@email.com"));
+        List<ShowUserDto> users = List.of(new ShowUserDto(1L, "user1", "user1@email.com", List.of()), new ShowUserDto(2L, "user2", "user2@email.com", List.of()));
         when(userService.getAllUsers()).thenReturn(users);
         List<ShowUserDto> result = userController.getAllUsers();
         assertEquals(2, result.size());

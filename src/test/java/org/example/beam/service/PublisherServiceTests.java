@@ -145,7 +145,8 @@ class PublisherServiceTests {
         publisher.setWebsite("ea.com");
         publisher.setFounded("1982");
 
-        ShowPublisherDto expectedDto = new ShowPublisherDto("Electronic Arts"
+        ShowPublisherDto expectedDto = new ShowPublisherDto(id
+                , "Electronic Arts"
                 , "USA"
                 , "40"
                 , "ea.com"

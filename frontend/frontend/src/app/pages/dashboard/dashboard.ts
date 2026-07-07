@@ -34,16 +34,6 @@ export class Dashboard implements OnInit {
     this.loadGames();
     this.loadUsers();
     this.publisherService.getAllPublishers().subscribe(data => this.publishers.set(data));
-    this.publisherService.getAllPublishers().subscribe({
-      next: (data) => {
-        console.log('Publishers loaded:', data);
-        this.publishers.set(data);
-      },
-      error: (err) => {
-        console.log('Publishers error:', err);
-      }
-    });
-
   }
 
   loadGames() {

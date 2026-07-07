@@ -6,17 +6,6 @@ import { Game } from '../model/game.model';
 export class GameService {
   private http = inject(HttpClient);
 
-  buyGame(gameId: number, userId: string, paymentMethod: string, token: string) {
-    return this.http.post(
-      `/api/purchases/buy/${gameId}`,
-      { paymentMethod },
-      {
-        responseType: 'text',
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
-  }
-
   getAllGames() {
     return this.http.get<Game[]>('/api/games/all');
   }

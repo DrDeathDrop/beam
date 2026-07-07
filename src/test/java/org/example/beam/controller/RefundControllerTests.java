@@ -4,6 +4,9 @@ import org.example.beam.service.RefundService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.http.ResponseEntity;
+
+import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -23,49 +26,65 @@ class RefundControllerTests {
 
     @Test
     void refundGame_success() {
-        Long userId = 1L, purchaseId = 2L;
+        Long purchaseId = 2L;
+        String email = "user@email.com";
 
-        String result = refundController.refundGame(userId, purchaseId);
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn(email);
 
-        assertEquals("Game refunded successfully", result);
-        verify(refundService).refundPurchase(userId, purchaseId);
+        ResponseEntity<String> result = refundController.refundGame(purchaseId, principal);
+
+        assertEquals("Game refunded successfully", result.getBody());
+        verify(refundService).refundPurchase(email, purchaseId);
     }
 
     @Test
     void refundGame_purchaseNotFound() {
-        Long userId = 1L, purchaseId = 2L;
+        Long purchaseId = 2L;
+        String email = "user@email.com";
+
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn(email);
 
         doThrow(new RuntimeException("Couldn't find the specified purchase"))
-                .when(refundService).refundPurchase(userId, purchaseId);
+                .when(refundService).refundPurchase(email, purchaseId);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> refundController.refundGame(userId, purchaseId));
+                () -> refundController.refundGame(purchaseId, principal));
 
         assertEquals("Couldn't find the specified purchase", ex.getMessage());
     }
 
     @Test
     void refundGame_userNotFound() {
-        Long userId = 1L, purchaseId = 2L;
+        Long purchaseId = 2L;
+        String email = "user@email.com";
+
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn(email);
 
         doThrow(new RuntimeException("User not found"))
-                .when(refundService).refundPurchase(userId, purchaseId);
+                .when(refundService).refundPurchase(email, purchaseId);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> refundController.refundGame(userId, purchaseId));
+                () -> refundController.refundGame(purchaseId, principal));
 
         assertEquals("User not found", ex.getMessage());
     }
 
     @Test
     void refundGame_alreadyRefunded() {
-        Long userId = 1L, purchaseId = 2L;
+        Long purchaseId = 2L;
+        String email = "user@email.com";
+
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn(email);
 
         doThrow(new RuntimeException("Purchase has already been refunded"))
-                .when(refundService).refundPurchase(userId, purchaseId);
+                .when(refundService).refundPurchase(email, purchaseId);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> refundController.refundGame(userId, purchaseId));
+                () -> refundController.refundGame(purchaseId, principal));
 
         assertEquals("Purchase has already been refunded", ex.getMessage());
     }

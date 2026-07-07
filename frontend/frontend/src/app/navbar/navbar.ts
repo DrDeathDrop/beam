@@ -1,15 +1,18 @@
-import { Component, OnInit, signal, OnDestroy } from '@angular/core';
-import { Router, RouterLink, NavigationEnd } from '@angular/router';
+import { Component, OnInit, signal, OnDestroy, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { CartService } from '../services/cart';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
 export class Navbar implements OnInit, OnDestroy {
+  protected cart = inject(CartService);
+
   role = signal<string | null>(null);
   loggedIn = signal(false);
   private routerSub!: Subscription;
@@ -20,8 +23,12 @@ export class Navbar implements OnInit, OnDestroy {
     const token = localStorage.getItem('token');
     this.loggedIn.set(!!token);
     if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      this.role.set(payload.role);
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.role.set(payload.role);
+      } catch {
+        this.role.set(null);
+      }
     } else {
       this.role.set(null);
     }
@@ -37,8 +44,10 @@ export class Navbar implements OnInit, OnDestroy {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.cart.clear();
     this.loggedIn.set(false);
+    this.role.set(null);
+    this.router.navigate(['/login']);
   }
 
   ngOnDestroy() {

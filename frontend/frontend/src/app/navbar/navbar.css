@@ -1,46 +1,88 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: #1a1a2e;
-  color: #fff;
+  padding: 0.85rem 2rem;
+  background: rgba(16, 17, 26, 0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
 
 .brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2a9d8f;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.brand:hover { color: var(--text); }
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+  color: #04231f;
+  font-weight: 900;
+  font-size: 1.05rem;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.35rem;
 }
 
-.links a {
+.links a:not(.btn) {
+  color: var(--text-dim);
+  font-size: 0.93rem;
+  font-weight: 500;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.links a:not(.btn):hover { color: var(--text); background: var(--surface-2); }
+
+.links a.active:not(.btn) {
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+}
+
+.cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--danger);
   color: #fff;
-  text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  line-height: 1;
 }
 
-.links a:hover {
-  color: #2a9d8f;
-}
+.links .btn { margin-left: 0.4rem; }
 
-.btn-logout {
-  padding: 0.4rem 0.9rem;
-  background: #e76f51;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.btn-logout:hover {
-  background: #c9573a;
+@media (max-width: 560px) {
+  .navbar { padding: 0.75rem 1rem; }
+  .links { gap: 0.1rem; }
+  .links a:not(.btn) { padding: 0.4rem 0.5rem; font-size: 0.85rem; }
 }

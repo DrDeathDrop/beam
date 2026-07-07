@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./pages/login/login').then(m => m.Login) },
   { path: 'register', loadComponent: () => import('./pages/register/register').then(m => m.Register) },
   { path: 'library', loadComponent: () => import('./pages/library/library').then(m => m.Library) },
+  { path: 'cart', loadComponent: () => import('./pages/cart/cart').then(m => m.Cart) },
   { path: 'users', canActivate:[adminGuard], loadComponent: () => import('./pages/user-list/user-list').then(m => m.UserList) },
   { path: 'dashboard', canActivate: [adminGuard], loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard) },
   { path: 'profile', loadComponent: () => import('./pages/profile/profile').then(m => m.Profile) },

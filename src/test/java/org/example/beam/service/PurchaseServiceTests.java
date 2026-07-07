@@ -41,11 +41,12 @@ class PurchaseServiceTests {
 
     @Test
     void buyGame_success() {
-        Long userId = 1L;
+        String email = "buyer@email.com";
         Long gameId = 2L;
 
         User user = new User();
-        user.setId(userId);
+        user.setId(1L);
+        user.setEmail(email);
 
         Game game = new Game();
         game.setId(gameId);
@@ -53,11 +54,11 @@ class PurchaseServiceTests {
 
         PaymentMethod method = PaymentMethod.valueOf("CREDIT_CARD");
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
         when(purchaseRepository.save(any(Purchase.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        Purchase completedPurchase = purchaseService.buyGame(userId, gameId, method);
+        Purchase completedPurchase = purchaseService.buyGame(email, gameId, method);
 
         assertNotNull(completedPurchase);
         assertEquals(user, completedPurchase.getUser());
@@ -71,13 +72,13 @@ class PurchaseServiceTests {
 
     @Test
     void buyGame_userNotFound_throwsException() {
-        Long userId = 99L;
+        String email = "missing@email.com";
         Long gameId = 2L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> purchaseService.buyGame(userId, gameId, PaymentMethod.valueOf("CREDIT_CARD")));
+                () -> purchaseService.buyGame(email, gameId, PaymentMethod.valueOf("CREDIT_CARD")));
 
         assertEquals("User not found", exception.getMessage());
 
@@ -87,20 +88,21 @@ class PurchaseServiceTests {
 
     @Test
     void buyGame_gameNotFound_throwsException() {
-        Long userId = 1L;
+        String email = "buyer@email.com";
         Long gameId = 88L;
         User user = new User();
-        user.setId(userId);
+        user.setId(1L);
+        user.setEmail(email);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(gameRepository.findById(gameId)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> purchaseService.buyGame(userId, gameId, PaymentMethod.valueOf("CREDIT_CARD")));
+                () -> purchaseService.buyGame(email, gameId, PaymentMethod.valueOf("CREDIT_CARD")));
 
         assertEquals("Game not found", exception.getMessage());
 
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(purchaseRepository, never()).save(any());
     }
 

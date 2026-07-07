@@ -6,7 +6,9 @@ import org.example.beam.dto.UpdateGameDto;
 import org.example.beam.service.GameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -84,6 +86,7 @@ class GameControllerTests {
         verify(gameService, times(1)).deleteGame(5L);
     }
 
+
     @Test
     void deleteGame_notFound_throwsException() {
         doThrow(new RuntimeException("Game not found"))
@@ -95,15 +98,23 @@ class GameControllerTests {
         assertEquals("Game not found", ex.getMessage());
     }
 
+
     @Test
     void updateGame_success() {
-        UpdateGameDto dto = new UpdateGameDto("Updated Title", "RPG", BigDecimal.valueOf(39.99), "2025", "New desc", null);
+        UpdateGameDto dto = new UpdateGameDto(
+                "Updated Title",
+                "RPG",
+                BigDecimal.valueOf(39.99),
+                "2025",
+                "New desc",
+                null);
 
         String result = gameController.updateGame(1L, dto);
 
         assertEquals("Game updated successfully", result);
         verify(gameService, times(1)).updateGame(1L, dto);
     }
+
 
     @Test
     void updateGame_partialFields_success() {
@@ -114,6 +125,7 @@ class GameControllerTests {
         assertEquals("Game updated successfully", result);
         verify(gameService, times(1)).updateGame(1L, dto);
     }
+
 
     @Test
     void updateGame_notFound_throwsException() {
@@ -127,17 +139,19 @@ class GameControllerTests {
         assertEquals("Game not found", ex.getMessage());
     }
 
+
     @Test
     void getGame_success() {
-        ShowGameDto dto = new ShowGameDto(1L, "Test Game", "Action", BigDecimal.valueOf(59.99), 12L, "Cool game", "2024", "PublisherName");
+        ShowGameDto dto = new ShowGameDto(1L, "Test Game", "Action", BigDecimal.valueOf(59.99), 12L, "PublisherName", "Cool game", "2024");
         when(gameService.getGame(1L)).thenReturn(dto);
 
         ShowGameDto result = gameController.getGame(1L);
 
         assertNotNull(result);
         assertEquals("Test Game", result.title());
-        assertEquals(12L, result.publisherName());
+        assertEquals("PublisherName", result.publisherName());
     }
+
 
     @Test
     void getGame_notFound_throwsException() {
@@ -154,7 +168,7 @@ class GameControllerTests {
     void getAllGames_returnsList() {
         List<ShowGameDto> games = List.of(
                 new ShowGameDto(1L, "Game One", "Action", BigDecimal.valueOf(29.99), 1L, "Desc", "2023", "Publisher A"),
-                new ShowGameDto(2L, "Game Two", "RPG",    BigDecimal.valueOf(49.99), 2L, "Desc", "2024", "Publisher B")
+                new ShowGameDto(2L, "Game Two", "RPG", BigDecimal.valueOf(49.99), 2L, "Desc", "2024", "Publisher B")
         );
         when(gameService.getAllGames()).thenReturn(games);
 

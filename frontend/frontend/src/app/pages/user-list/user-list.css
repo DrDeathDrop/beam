@@ -1,35 +1,23 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
 .user-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
   margin-top: 1.5rem;
 }
 
 .user-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  transition: border-color 0.15s;
 }
+.user-card:hover { border-color: var(--border-strong); }
+.user-card h2 { margin: 0; font-size: 1.1rem; }
 
-.user-card:hover {
-  border-color: #2a9d8f;
-  transition: border-color 0.2s;
-}
+.email { color: var(--text-mute); font-size: 0.88rem; }
 
-.email {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.error {
-  color: red;
-}
+.error { color: var(--danger); }

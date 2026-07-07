@@ -165,7 +165,7 @@ class GameServiceTests {
         game.setPublisher(publisher);
 
         ShowGameDto expectedDto = new ShowGameDto(gameId, "Test Game", "Action",
-                BigDecimal.valueOf(49.99), "Test Publisher", "A test game", "2024");
+                BigDecimal.valueOf(49.99), 1L, "Test Publisher", "A test game", "2024");
 
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(game));
         when(gameMapper.toDto(game)).thenReturn(expectedDto);

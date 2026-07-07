@@ -1,40 +1,37 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {GameService} from '../../services/game';
-import {Game} from '../../model/game.model';
-import {ActivatedRoute} from '@angular/router';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { GameService } from '../../services/game';
+import { PurchaseService } from '../../services/purchase';
+import { CartService } from '../../services/cart';
+import { Game } from '../../model/game.model';
+import { coverGradient, coverInitials } from '../../util/cover';
 
 @Component({
   selector: 'app-game-detail',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './game-detail.html',
   styleUrl: './game-detail.css',
 })
-export class GameDetail implements OnInit{
+export class GameDetail implements OnInit {
   private gameService = inject(GameService);
-  private route = inject(ActivatedRoute);  // reads the URL
+  private purchaseService = inject(PurchaseService);
+  protected cart = inject(CartService);
+  private route = inject(ActivatedRoute);
 
-  game = signal<Game | null>(null);  // null until loaded
+  game = signal<Game | null>(null);
   loading = signal(true);
   error = signal('');
 
-  paymentMethod = signal<string>('CREDIT_CARD');
+  paymentMethod = signal('CREDIT_CARD');
+  buying = signal(false);
+  purchased = signal(false);
+  buyError = signal('');
 
-  buyGame() {
-    const game = this.game();
-    if (!game) return;
+  cover = coverGradient;
+  initials = coverInitials;
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.error.set('You must be logged in to buy a game.');
-      return;
-    }
-
-    const userId = JSON.parse(atob(token.split('.')[1])).sub;
-
-    this.gameService.buyGame(game.id, userId, this.paymentMethod(), token).subscribe({
-      next: () => { },
-      error: () => this.error.set('Purchase failed.')
-    });
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 
   ngOnInit() {
@@ -48,6 +45,30 @@ export class GameDetail implements OnInit{
       error: () => {
         this.error.set('Could not load game. Is the backend running?');
         this.loading.set(false);
+      }
+    });
+  }
+
+  buyNow() {
+    const game = this.game();
+    if (!game) return;
+
+    this.buyError.set('');
+    if (!this.isLoggedIn) {
+      this.buyError.set('Please sign in to buy this game.');
+      return;
+    }
+
+    this.buying.set(true);
+    this.purchaseService.buy(game.id, this.paymentMethod()).subscribe({
+      next: () => {
+        this.buying.set(false);
+        this.purchased.set(true);
+        this.cart.remove(game.id);
+      },
+      error: () => {
+        this.buying.set(false);
+        this.buyError.set('Purchase failed. Please try again.');
       }
     });
   }

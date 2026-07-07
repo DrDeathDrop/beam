@@ -16,6 +16,7 @@ public class JwtService {
     private static final int EXPIRATION_MS = 86400000;
 
     public JwtService(@Value("${jwt.secret}") String secret) {
+
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 

@@ -6,7 +6,7 @@
     </div>
 
     @if (error()) {
-      <p class="error-banner">{{ error() }}</p>
+      <p class="alert alert-error">{{ error() }}</p>
     }
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
@@ -34,7 +34,7 @@
         />
       </div>
 
-      <button type="submit" class="btn-primary" [disabled]="loading()">
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
         @if (loading()) {
           Signing in…
         } @else {

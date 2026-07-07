@@ -1,31 +1,30 @@
 <div class="container">
   @if (loading()) {
-    <p>Loading profile...</p>
+    <p class="muted">Loading profile…</p>
   }
 
-  @if (user()) {
-    <div class="profile-card">
-      <div class="avatar">{{ user()!.name.charAt(0).toUpperCase() }}</div>
-      <h1>{{ user()!.name }}</h1>
-      <p class="email">{{ user()!.email }}</p>
+  @if (user(); as u) {
+    <div class="profile-card card">
+      <div class="avatar">{{ u.name.charAt(0).toUpperCase() }}</div>
+      <div class="who">
+        <h1>{{ u.name }}</h1>
+        <p class="email muted">{{ u.email }}</p>
+      </div>
     </div>
 
-    <div class="section">
-      <h2>Owned Games</h2>
-
-      @if (ownedGames().length === 0) {
-        <p class="empty">No games yet.</p>
-      } @else {
-        <div class="game-grid">
-          @for (game of ownedGames(); track game.gameName) {
-            <div class="game-card">
-              <h3>{{ game.gameName }}</h3>
-              <p class="price">Paid: ${{ game.pricePaid }}</p>
-              <p class="status">{{ game.status }}</p>
-            </div>
-          }
-        </div>
-      }
+    <div class="stats">
+      <div class="stat card">
+        <span class="stat-value">{{ owned().length }}</span>
+        <span class="stat-label muted">Games owned</span>
+      </div>
+      <div class="stat card">
+        <span class="stat-value">${{ totalSpent().toFixed(2) }}</span>
+        <span class="stat-label muted">Total spent</span>
+      </div>
+      <a class="stat stat-link card" routerLink="/library">
+        <span class="stat-value">→</span>
+        <span class="stat-label">Open library</span>
+      </a>
     </div>
   }
 </div>

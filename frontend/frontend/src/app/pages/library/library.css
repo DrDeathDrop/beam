@@ -1,0 +1,53 @@
+.container { max-width: 1100px; }
+.container .muted { margin-top: 0.35rem; }
+.spaced { margin-top: 1.25rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.owned {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.owned.refunded { opacity: 0.7; }
+
+.cover {
+  aspect-ratio: 16 / 7;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.9rem;
+  font-weight: 800;
+}
+
+.body {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.body h3 { margin: 0; font-size: 1.05rem; }
+
+.line { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.paid { font-size: 0.85rem; }
+
+.body .btn { align-self: flex-start; }
+
+.empty {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.empty-mark { font-size: 3rem; }
+.empty h2 { margin: 0; }
+.empty .btn { margin-top: 0.75rem; }

@@ -1,22 +1,47 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { GameService } from '../../services/game';
-import { Game } from '../../model/game.model';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
+import { GameService } from '../../services/game';
+import { CartService } from '../../services/cart';
+import { Game } from '../../model/game.model';
+import { coverGradient, coverInitials } from '../../util/cover';
 
 @Component({
   selector: 'app-game-list',
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './game-list.html',
   styleUrl: './game-list.css'
 })
 export class GameList implements OnInit {
   private gameService = inject(GameService);
+  protected cart = inject(CartService);
 
   games = signal<Game[]>([]);
   loading = signal(true);
   error = signal('');
+
+  search = signal('');
+  genre = signal('All');
+
+  genres = computed(() => {
+    const set = new Set(this.games().map((g) => g.genre).filter(Boolean));
+    return ['All', ...Array.from(set).sort()];
+  });
+
+  filtered = computed(() => {
+    const q = this.search().trim().toLowerCase();
+    const genre = this.genre();
+    return this.games().filter((game) => {
+      const matchesGenre = genre === 'All' || game.genre === genre;
+      const matchesText =
+        !q ||
+        game.title?.toLowerCase().includes(q) ||
+        game.publisherName?.toLowerCase().includes(q);
+      return matchesGenre && matchesText;
+    });
+  });
+
+  cover = coverGradient;
+  initials = coverInitials;
 
   ngOnInit() {
     this.gameService.getAllGames().subscribe({
@@ -29,5 +54,9 @@ export class GameList implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  onSearch(event: Event) {
+    this.search.set((event.target as HTMLInputElement).value);
   }
 }

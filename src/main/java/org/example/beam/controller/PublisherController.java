@@ -39,9 +39,7 @@ public class PublisherController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePublisher(@PathVariable Long id) {
-
         publisherService.deletePublisher(id);
-
     }
 
     @PutMapping("/update/{id}")

@@ -1,1 +1,48 @@
-<p>library works!</p>
+<div class="container">
+  <h1 class="page-title">Your library</h1>
+  <p class="muted">Games you own on Beam.</p>
+
+  @if (message()) { <p class="alert alert-success spaced">{{ message() }}</p> }
+  @if (error()) { <p class="alert alert-error spaced">{{ error() }}</p> }
+
+  @if (loading()) {
+    <p class="muted spaced">Loading your library…</p>
+  } @else if (games().length === 0) {
+    <div class="empty card">
+      <div class="empty-mark">🎮</div>
+      <h2>No games yet</h2>
+      <p class="muted">Head to the store and pick up something great.</p>
+      <a class="btn btn-primary" routerLink="/store">Browse store</a>
+    </div>
+  } @else {
+    <div class="grid">
+      @for (game of games(); track game.id) {
+        <div class="owned card" [class.refunded]="game.status === 'REFUNDED'">
+          <div class="cover" [style.background]="cover(game.gameName)">
+            <span>{{ initials(game.gameName) }}</span>
+          </div>
+          <div class="body">
+            <h3>{{ game.gameName }}</h3>
+            <div class="line">
+              @if (game.status === 'REFUNDED') {
+                <span class="badge badge-danger">Refunded</span>
+              } @else {
+                <span class="badge badge-success">Owned</span>
+              }
+              <span class="paid muted">Paid ${{ game.pricePaid }}</span>
+            </div>
+
+            @if (game.status !== 'REFUNDED') {
+              <button
+                class="btn btn-ghost btn-sm"
+                (click)="refund(game)"
+                [disabled]="refunding() === game.id">
+                {{ refunding() === game.id ? 'Refunding…' : 'Request refund' }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,52 +1,71 @@
 <div class="container">
+  <a class="back" routerLink="/store">← Back to store</a>
 
   @if (loading()) {
-    <p class="status">Loading game...</p>
+    <p class="status muted">Loading game…</p>
   }
 
   @if (error()) {
-    <p class="status error">{{ error() }}</p>
+    <p class="alert alert-error">{{ error() }}</p>
   }
 
-  @if (game()) {
-    <div class="game-detail">
-
-      <div class="header">
-        <h1>{{ game()!.title }}</h1>
-        <span class="genre">{{ game()!.genre }}</span>
+  @if (game(); as g) {
+    <div class="detail">
+      <div class="hero" [style.background]="cover(g.title)">
+        <span class="hero-initials">{{ initials(g.title) }}</span>
       </div>
 
-      <div class="body">
-        <div class="info">
-          <p class="description">{{ game()!.description }}</p>
-
-          <div class="meta">
-            <div class="meta-row">
-              <span class="label">Publisher</span>
-              <span>{{ game()!.publisherName }}</span>
-            </div>
-            <div class="meta-row">
-              <span class="label">Release Date</span>
-              <span>{{ game()!.releaseDate }}</span>
-            </div>
-          </div>
+      <div class="info">
+        <div class="head">
+          <h1>{{ g.title }}</h1>
+          @if (g.genre) { <span class="badge badge-accent">{{ g.genre }}</span> }
         </div>
 
-        <div class="purchase-box">
-          <span class="price">${{ game()!.price }}</span>
-          <select (change)="paymentMethod.set($any($event.target).value)">
+        <p class="description">{{ g.description }}</p>
+
+        <div class="meta">
+          <div class="meta-row">
+            <span class="label">Publisher</span>
+            <span>{{ g.publisherName }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Release date</span>
+            <span>{{ g.releaseDate }}</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="purchase card">
+        <span class="price">${{ g.price }}</span>
+
+        @if (purchased()) {
+          <p class="alert alert-success">Purchase complete! It's now in your library.</p>
+          <a class="btn btn-primary btn-block" routerLink="/library">Go to library</a>
+        } @else {
+          <label class="field-label" for="pay">Payment method</label>
+          <select id="pay" [value]="paymentMethod()" (change)="paymentMethod.set($any($event.target).value)">
             <option value="CREDIT_CARD">Credit Card</option>
             <option value="DEBIT_CARD">Debit Card</option>
             <option value="G_PAY">Google Pay</option>
             <option value="BEAM_WALLET">Beam Wallet</option>
           </select>
 
-          <button (click)="buyGame()">Buy</button>
-          <button class="buy-btn"(click) = "buyGame()">Buy Now</button>
-        </div>
-      </div>
+          <button class="btn btn-primary btn-block" (click)="buyNow()" [disabled]="buying()">
+            {{ buying() ? 'Processing…' : 'Buy now' }}
+          </button>
 
+          <button
+            class="btn btn-ghost btn-block"
+            [class.in-cart]="cart.has(g.id)"
+            (click)="cart.toggle(g)">
+            {{ cart.has(g.id) ? 'Remove from cart' : 'Add to cart' }}
+          </button>
+
+          @if (buyError()) {
+            <p class="alert alert-error">{{ buyError() }}</p>
+          }
+        }
+      </aside>
     </div>
   }
-
 </div>

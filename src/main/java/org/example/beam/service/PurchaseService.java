@@ -39,6 +39,7 @@ public class PurchaseService {
         List<PurchaseListDto> purchaseDto = purchaseRepository.findAllByUserId(userId)
                 .stream()
                 .map(p -> new PurchaseListDto(
+                        p.getId(),
                         p.getPricePaid(),
                         p.getPaymentMethod(),
                         p.getStatus(),

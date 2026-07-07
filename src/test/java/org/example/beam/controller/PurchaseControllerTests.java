@@ -9,8 +9,10 @@ import org.example.beam.enumeration.PurchaseStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,23 +33,29 @@ class PurchaseControllerTests {
 
     @Test
     void buyGame_success() {
-        Long userId = 1L, gameId = 2L;
-        CreatePurchaseDto dto = new CreatePurchaseDto(null, PaymentMethod.CREDIT_CARD, null, userId, gameId);
+        Long gameId = 2L;
+        String email = "buyer@email.com";
+        CreatePurchaseDto dto = new CreatePurchaseDto(null, PaymentMethod.CREDIT_CARD, null, null, gameId);
 
-        String result = purchaseController.buyGame(userId, gameId, dto);
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn(email);
 
-        assertEquals("Game purchased successfully", result);
-        verify(purchaseService).buyGame(userId, gameId, PaymentMethod.CREDIT_CARD);
+        ResponseEntity<String> result = purchaseController.buyGame(gameId, dto, principal);
+
+        assertEquals("Game purchased successfully", result.getBody());
+        verify(purchaseService).buyGame(email, gameId, PaymentMethod.CREDIT_CARD);
     }
 
     @Test
     void buyGame_missingPaymentMethod() {
-        Long userId = 1L, gameId = 2L;
-        CreatePurchaseDto dto = new CreatePurchaseDto(null, null, null, userId, gameId);
+        Long gameId = 2L;
+        CreatePurchaseDto dto = new CreatePurchaseDto(null, null, null, null, gameId);
 
-        String result = purchaseController.buyGame(userId, gameId, dto);
+        Principal principal = mock(Principal.class);
 
-        assertEquals("Please provide a valid payment method", result);
+        ResponseEntity<String> result = purchaseController.buyGame(gameId, dto, principal);
+
+        assertEquals("Please provide a valid payment method", result.getBody());
         verify(purchaseService, never()).buyGame(any(), any(), any());
     }
 
@@ -55,7 +63,7 @@ class PurchaseControllerTests {
     void showPurchase_success() {
         Long userId = 1L;
         List<PurchaseListDto> library = List.of(
-                new PurchaseListDto(BigDecimal.valueOf(29.99), PaymentMethod.G_PAY, PurchaseStatus.COMPLETED, "Some Game")
+                new PurchaseListDto(1L, BigDecimal.valueOf(29.99), PaymentMethod.G_PAY, PurchaseStatus.COMPLETED, "Some Game")
         );
         ShowPurchaseDto dto = new ShowPurchaseDto(library);
 
