@@ -22,16 +22,11 @@
 }
 .brand:hover { color: var(--text); }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
+.brand-logo {
   width: 30px;
   height: 30px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--accent-bright), var(--accent));
-  color: #04231f;
-  font-weight: 900;
-  font-size: 1.05rem;
+  border-radius: 8px;
+  display: block;
 }
 
 .links {
